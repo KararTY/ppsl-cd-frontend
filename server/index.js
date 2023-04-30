@@ -38,7 +38,14 @@ async function startServer () {
       { headers: req.headers }
     )
 
-    const { user = null } = await userRes.json()
+    let user = null
+
+    if (
+      userRes.status === 200 &&
+      userRes.headers.get('content-type')?.includes('application/json')
+    ) {
+      user = await userRes.json()
+    }
 
     const pageContextInit = {
       urlOriginal: req.originalUrl,
