@@ -16,7 +16,7 @@ async function render (pageContext) {
   hydrateRoot(
     document.getElementById('root'),
     <PageShell pageContext={pageContext}>
-      <Page {...pageProps} user={user?.user} />
+      <Page {...pageProps} user={user} />
     </PageShell>
   )
 }

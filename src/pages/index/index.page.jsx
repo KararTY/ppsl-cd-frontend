@@ -1,20 +1,33 @@
 import { Link } from '@/renderer/Link'
 
-export function Page ({ user, request }) {
+export function Page (pageProps) {
+  const { user, request } = pageProps
+
   return (
     <main className="container">
-      <h1>PPSL CD</h1>
-      {!user
-        ? (
-        <Link href="/login">Login</Link>
-          )
-        : (
-        <>
-          <p>Hello, {user.name}. You&apos;re logged in.</p>
-        </>
-          )}
+      <article>
+        <div>
+          <hgroup>
+            <h1>PPSL CD</h1>
+            <h2>Reviews database</h2>
+          </hgroup>
 
-      <pre>{JSON.stringify(request)}</pre>
+          {!user
+            ? (
+            <Link href="/login">Login</Link>
+              )
+            : (
+            <>
+              <p>
+                Hello, {user.name}. You&apos;re logged in. [
+                <Link href="/profile">Access profile</Link>]
+              </p>
+            </>
+              )}
+
+          <pre>{JSON.stringify(request)}</pre>
+        </div>
+      </article>
     </main>
   )
 }

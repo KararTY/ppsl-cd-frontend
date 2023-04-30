@@ -34,15 +34,16 @@ async function startServer () {
 
   app.get('*', async (req, res, next) => {
     const userRes = await fetch(
-      new URL('./auth/session', process.env.API_ENDPOINT),
+      new URL('./users/session', process.env.API_ENDPOINT),
       { headers: req.headers }
     )
 
-    const userData = await userRes.json()
+    const { user = null } = await userRes.json()
 
     const pageContextInit = {
       urlOriginal: req.originalUrl,
-      user: userData
+      user,
+      cookie: req.headers.cookie
     }
 
     const pageContext = await renderPage(pageContextInit)

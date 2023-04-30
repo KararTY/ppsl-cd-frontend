@@ -14,7 +14,7 @@ export async function render (pageContext) {
 
   const pageHtml = ReactDOMServer.renderToString(
     <PageShell pageContext={pageContext}>
-      <Page {...pageProps} user={user?.user} />
+      <Page {...pageProps} user={user} />
     </PageShell>
   )
 

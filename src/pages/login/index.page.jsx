@@ -1,16 +1,6 @@
 import { Button } from '@/components/Button'
 import { signIn } from 'fastify-next-auth/client'
 
-export function onBeforeRender (pageContext) {
-  if (pageContext.user) {
-    return {
-      pageContext: {
-        redirectTo: '/'
-      }
-    }
-  }
-}
-
 export function Page () {
   return (
     <main className="container">
