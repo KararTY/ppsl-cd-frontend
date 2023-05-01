@@ -13,7 +13,7 @@ const root = fileURLToPath(new URL('../', import.meta.url))
 
 startServer()
 
-async function startServer () {
+async function startServer() {
   const app = express()
 
   app.use(compression())

@@ -1,5 +1,5 @@
-import { Button } from '@/components/Button'
 import { signIn } from 'fastify-next-auth/client'
+import { Button } from '@/components/Button'
 
 export function Page () {
   return (
