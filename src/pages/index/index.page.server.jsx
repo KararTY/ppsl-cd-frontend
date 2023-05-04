@@ -1,8 +1,14 @@
 export async function onBeforeRender (_) {
-  const url = new URL('./posts/', process.env.API_ENDPOINT)
+  const url = new URL('./posts/system', process.env.API_ENDPOINT)
 
-  const res = await fetch(url.href)
-  const json = await res.json()
+  let json = {}
+
+  try {
+    const res = await fetch(url.href)
+    json = await res.json()
+  } catch (err) {
+    console.error(err)
+  }
 
   return {
     pageContext: {
