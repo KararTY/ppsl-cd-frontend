@@ -13,7 +13,7 @@ const root = fileURLToPath(new URL('../', import.meta.url))
 
 startServer()
 
-async function startServer() {
+async function startServer () {
   const app = express()
 
   app.use(compression())
@@ -33,13 +33,15 @@ async function startServer() {
   }
 
   app.get('*', async (req, res, next) => {
-    const userRes = await fetch(
-      new URL('./users/session', process.env.API_ENDPOINT),
-      { headers: req.headers }
-    )
-
+    // TODO: This is too hacky, there must be a better way!
+    let userRes = {}
+    try {
+      userRes = await fetch(
+        new URL('./users/session', process.env.API_ENDPOINT),
+        { headers: req.headers }
+      )
+    } catch {}
     let user = null
-
     if (
       userRes.status === 200 &&
       userRes.headers.get('content-type')?.includes('application/json')
