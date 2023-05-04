@@ -1,6 +1,6 @@
-export function Button ({ children, ...restProps }) {
+export function Button ({ children, className = '', ...restProps }) {
   return (
-    <button className="text-black dark:text-white" {...restProps}>
+    <button className={`m-0 ${className}`} {...restProps}>
       {children}
     </button>
   )
