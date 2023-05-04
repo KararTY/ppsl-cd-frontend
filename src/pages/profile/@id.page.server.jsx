@@ -1,3 +1,5 @@
+import { getUserById } from '@/lib/api/user'
+
 export async function onBeforeRender (pageContext) {
   if (!pageContext.user) {
     return {
@@ -7,17 +9,14 @@ export async function onBeforeRender (pageContext) {
     }
   }
 
+  const { id } = pageContext.routeParams
+
   let json
 
-  if (pageContext.routeParams.id === pageContext.user.id) {
+  if (id === pageContext.user.id) {
     json = pageContext.user
   } else {
-    const url = new URL(
-      `./users/${pageContext.routeParams.id}`,
-      process.env.API_ENDPOINT
-    )
-    const res = await fetch(url, { headers: { cookie: pageContext.cookie } })
-    json = await res.json()
+    json = await getUserById(id, pageContext.cookie)
   }
 
   return {

@@ -1,7 +1,11 @@
 import { useRef } from 'react'
 
+import { Container } from '@/components/Container'
+
 export function Page (pageProps) {
-  const { request = {} } = pageProps
+  const { request = {}, user = {} } = pageProps
+
+  const me = request.id === user.id
 
   const emailEl = useRef()
 
@@ -14,28 +18,36 @@ export function Page (pageProps) {
   }
 
   return (
-    <main className="container">
-      <article>
-        <div>
-          <hgroup>
-            <h1>{request.name}&apos;s profile</h1>
-            <h2></h2>
-          </hgroup>
-          <img src={request.image} />
-          {request.email && (
+    <Container>
+      <header>
+        <hgroup className="m-0">
+          <h1>{request.name}&apos;s profile</h1>
+          <h2></h2>
+        </hgroup>
+      </header>
+      <div>
+        <img src={request.image} />
+        {/* eslint-disable-next-line multiline-ternary */}
+        {request.email && me ? (
+          <>
             <label>
               <span>Email:</span>
               <input
                 readOnly
-                defaultValue={'Tap to see your email'}
+                defaultValue={'Tap to see email'}
                 ref={emailEl}
                 onFocus={handleEmailOnFocus}
                 onBlur={handleEmailOnBlur}
               />
             </label>
-          )}
-        </div>
-      </article>
-    </main>
+            {/* <BioEditor /> */}
+          </>
+        ) : (
+          {
+            /* <BioHTML /> */
+          }
+        )}
+      </div>
+    </Container>
   )
 }
