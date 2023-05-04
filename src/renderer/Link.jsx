@@ -1,5 +1,8 @@
 import { usePageContext } from './usePageContext'
 
+/**
+ * @returns {React.FC<React.HTMLProps<HTMLAnchorElement>>}
+ */
 export function Link (props) {
   const pageContext = usePageContext()
   const className = [
