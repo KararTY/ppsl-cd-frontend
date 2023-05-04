@@ -12,11 +12,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@lexical/headless": "^0.10.0",
+    "@lexical/react": "^0.10.0",
+    "@msgpack/msgpack": "^3.0.0-beta2",
     "@picocss/pico": "^1.5.10",
     "compression": "^1.7.4",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "fastify-next-auth": "^0.3.0",
+    "lexical": "^0.10.0",
+    "lucide-react": "^0.192.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "vite-plugin-ssr": "^0.4.118"
