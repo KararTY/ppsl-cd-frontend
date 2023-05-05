@@ -41,17 +41,17 @@ async function startServer () {
         { headers: req.headers }
       )
     } catch {}
-    let user = null
+    let session = null
     if (
       userRes.status === 200 &&
       userRes.headers.get('content-type')?.includes('application/json')
     ) {
-      user = await userRes.json()
+      session = await userRes.json()
     }
 
     const pageContextInit = {
       urlOriginal: req.originalUrl,
-      user,
+      user: session?.user ?? null,
       cookie: req.headers.cookie
     }
 
