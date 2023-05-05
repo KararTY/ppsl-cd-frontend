@@ -7,14 +7,14 @@ export const passToClient = ['pageProps', 'urlPathname', 'user', 'redirectTo']
 
 // This render() hook only supports SSR, see https://vite-plugin-ssr.com/render-modes for how to modify render() to support SPA
 export async function render (pageContext) {
-  const { Page, pageProps, user } = pageContext
+  const { Page, pageProps, user, redirectTo } = pageContext
   if (!Page) {
     throw new Error('My render() hook expects pageContext.Page to be defined')
   }
 
   const pageHtml = ReactDOMServer.renderToString(
     <PageShell pageContext={pageContext}>
-      <Page {...pageProps} user={user} />
+      {!redirectTo && <Page {...pageProps} user={user} />}
     </PageShell>
   )
 
