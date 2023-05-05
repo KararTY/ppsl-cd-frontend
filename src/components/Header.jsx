@@ -4,7 +4,7 @@ import { Link } from '@/renderer/Link.jsx'
 import { usePageContext } from '@/renderer/usePageContext.jsx'
 import { Button } from './Button.jsx'
 
-export function Header ({ className = '', title, children }) {
+export function Header ({ className = '', title }) {
   const { urlPathname, user } = usePageContext()
 
   return (
@@ -22,13 +22,18 @@ export function Header ({ className = '', title, children }) {
             )
           )
         : (
-        <>
-          <p>
-            Hello, {user.name}. You&apos;re logged in. [
-            <Link href="/profile">Access profile</Link>] [
-            <Button onClick={signOut()}>Logout</Button>]
-          </p>
-        </>
+        <p className="m-0 flex gap-2">
+          <span>Hello, {user.name}. You&apos;re logged in.</span>
+          <span>
+            [<Link href="/profile">Access profile</Link>]
+          </span>
+          <Button
+            onClick={() => signOut()}
+            className="inline-block p-0 px-1 text-xs"
+          >
+            Logout
+          </Button>
+        </p>
           )}
     </header>
   )
