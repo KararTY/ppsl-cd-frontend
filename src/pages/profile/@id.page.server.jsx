@@ -1,19 +1,19 @@
 import { getUserById } from '@/lib/api/user'
 
 export async function onBeforeRender (pageContext) {
-  if (!pageContext.user) {
-    return {
-      pageContext: {
-        redirectTo: '/login'
-      }
-    }
-  }
+  // if (!pageContext.user) {
+  //   return {
+  //     pageContext: {
+  //       redirectTo: '/login'
+  //     }
+  //   }
+  // }
 
   const { id } = pageContext.routeParams
 
   let json
 
-  if (id === pageContext.user.id) {
+  if (id === pageContext.user?.id) {
     json = pageContext.user
   } else {
     json = await getUserById(id, pageContext.cookie)

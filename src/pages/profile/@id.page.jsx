@@ -1,12 +1,13 @@
 import { useRef } from 'react'
 
 import { Container } from '@/components/Container'
-import { Header } from '@/components/Header'
+
+import cdROMImage from '@/assets/CD-ROM.png'
 
 export function Page (pageProps) {
   const { request = {}, user = {} } = pageProps
 
-  const me = request.id === user.id
+  const me = request.id === user?.id
 
   const emailEl = useRef()
 
@@ -18,16 +19,25 @@ export function Page (pageProps) {
     emailEl.current.value = emailEl.current.defaultValue
   }
 
+  const img = request.image
+    ? { url: request.image }
+    : { url: cdROMImage, ppsl: true }
+
   return (
     <Container>
-      <Header>
-        <hgroup className="m-0">
-          <h1>{request.name}&apos;s profile</h1>
-          <h2></h2>
-        </hgroup>
-      </Header>
-      <div>
-        <img src={request.image} />
+      <div className="p-4 sm:p-8">
+        <div className="mb-4 flex flex-row items-center gap-2">
+          <img
+            src={img.url}
+            className={`h-auto w-16 bg-gray-500 bg-opacity-50 p-2 ${
+              img.ppsl && 'opacity-75'
+            }`}
+          />
+          <hgroup className="m-0">
+            <h3>Profile</h3>
+            <h4>{request.name}</h4>
+          </hgroup>
+        </div>
         {/* eslint-disable-next-line multiline-ternary */}
         {request.email && me ? (
           <>
