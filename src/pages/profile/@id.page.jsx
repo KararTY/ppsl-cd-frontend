@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 
 import { Container } from '@/components/Container'
+import { Header } from '@/components/Header'
 
 export function Page (pageProps) {
   const { request = {}, user = {} } = pageProps
@@ -19,12 +20,12 @@ export function Page (pageProps) {
 
   return (
     <Container>
-      <header>
+      <Header>
         <hgroup className="m-0">
           <h1>{request.name}&apos;s profile</h1>
           <h2></h2>
         </hgroup>
-      </header>
+      </Header>
       <div>
         <img src={request.image} />
         {/* eslint-disable-next-line multiline-ternary */}

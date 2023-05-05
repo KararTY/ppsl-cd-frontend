@@ -5,13 +5,14 @@ import { Link } from '@/renderer/Link'
 import { Button } from '@/components/Button'
 import { Container } from '@/components/Container'
 import { PostCard } from '@/components/PostCard'
+import { Header } from '@/components/Header'
 
 export function Page (pageProps) {
   const { user, request } = pageProps
 
   return (
     <Container>
-      <header>
+      <Header>
         <hgroup className="m-0">
           <h1>PPSL CD</h1>
           <h2>Reviews database</h2>
@@ -31,12 +32,14 @@ export function Page (pageProps) {
             </p>
           </>
             )}
-      </header>
+      </Header>
 
-      <div className="mb-2 !grid  grid-cols-2 gap-2">
-        {request.result?.map((post) => (
-          <PostCard key={post.id} {...post} />
-        ))}
+      <div className="p-4">
+        <div className="!grid grid-cols-2 gap-2">
+          {request.result?.map((post) => (
+            <PostCard key={post.id} {...post} />
+          ))}
+        </div>
       </div>
     </Container>
   )

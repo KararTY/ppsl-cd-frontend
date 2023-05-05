@@ -1,5 +1,6 @@
 import { Container } from '@/components/Container'
-import { BioHTML } from '@/components/editors/Bio/read'
+import { Header } from '@/components/Header'
+import { BioEditor } from '@/components/editors/Bio/editor'
 import parseContent from '@/lib/api/parseContent'
 
 export function Page (pageProps) {
@@ -11,15 +12,15 @@ export function Page (pageProps) {
 
   return (
     <Container>
-      <header>
+      <Header className="mx-0 mb-0">
         <hgroup className="m-0">
           <h1>PPSL CD</h1>
           <h2>Reviews database</h2>
         </hgroup>
-      </header>
+      </Header>
 
       <div>
-        <BioHTML initialContent={parsedContent} />
+        <BioEditor readOnly initialContent={parsedContent} />
       </div>
     </Container>
   )

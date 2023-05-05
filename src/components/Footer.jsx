@@ -5,8 +5,8 @@ export function Footer () {
   const { urlPathname } = usePageContext()
 
   return (
-    <footer className="flex flex-col gap-2">
-      <div className="flex justify-between">
+    <footer className="mx-0 mt-0 flex flex-col gap-2">
+      <div className="flex items-center justify-between">
         {urlPathname !== '/'
           ? (
           <span>
@@ -20,10 +20,14 @@ export function Footer () {
           </span>
             )}
 
-        <span>
-          [<Link href="/privacy">Privacy Policy</Link>] [
-          <Link href="/terms">Terms of Service</Link>]
-        </span>
+        <div className="flex flex-col flex-wrap items-baseline gap-2">
+          <span>
+            [<Link href="/privacy">Privacy Policy</Link>]
+          </span>
+          <span>
+            [<Link href="/terms">Terms of Service</Link>]
+          </span>
+        </div>
       </div>
     </footer>
   )
