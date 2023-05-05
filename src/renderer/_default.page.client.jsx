@@ -1,5 +1,6 @@
+import React from 'react'
 import { hydrateRoot } from 'react-dom/client'
-import { PageShell } from './PageShell'
+import { PageShell } from './PageShell.jsx'
 
 export { render }
 
@@ -15,9 +16,11 @@ async function render (pageContext) {
 
   hydrateRoot(
     document.getElementById('root'),
-    <PageShell pageContext={pageContext}>
-      <Page {...pageProps} user={user} />
-    </PageShell>
+    <React.StrictMode>
+      <PageShell pageContext={pageContext}>
+        <Page {...pageProps} user={user} />
+      </PageShell>
+    </React.StrictMode>
   )
 }
 
