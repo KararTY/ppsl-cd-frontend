@@ -10,7 +10,7 @@ export function Footer () {
         {urlPathname !== '/'
           ? (
           <span>
-            [<Link href="/">Go to Homepage</Link>]
+            <Link href="/">Go to Homepage</Link>
           </span>
             )
           : (
@@ -21,12 +21,8 @@ export function Footer () {
             )}
 
         <div className="flex flex-col flex-wrap items-baseline gap-2">
-          <span>
-            [<Link href="/privacy">Privacy Policy</Link>]
-          </span>
-          <span>
-            [<Link href="/terms">Terms of Service</Link>]
-          </span>
+          <Link href="/privacy">Privacy Policy</Link>
+          <Link href="/terms">Terms of Service</Link>
         </div>
       </div>
     </footer>

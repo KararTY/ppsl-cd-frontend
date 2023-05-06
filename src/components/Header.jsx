@@ -15,18 +15,12 @@ export function Header ({ className = '', title }) {
       </hgroup>
       {!user
         ? (
-            urlPathname !== '/login' && (
-          <>
-            [<Link href="/login">Login</Link>]
-          </>
-            )
+            urlPathname !== '/login' && <Link href="/login">Login</Link>
           )
         : (
         <p className="m-0 flex gap-2">
           <span>Hello, {user.name}. You&apos;re logged in.</span>
-          <span>
-            [<Link href="/profile">Access profile</Link>]
-          </span>
+          <Link href="/profile">Access profile</Link>
           <Button
             onClick={() => signOut()}
             className="inline-block p-0 px-1 text-xs"
