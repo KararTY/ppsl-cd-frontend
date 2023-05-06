@@ -6,7 +6,7 @@ import { decode } from '@msgpack/msgpack'
  * @returns {object | string}
  */
 export function tryParseContent (UintStr, stringify = false) {
-  let res = UintStr
+  let res = UintStr || ''
 
   if (res.length > 0) {
     res = decode(res.split(','))
