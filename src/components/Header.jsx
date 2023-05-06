@@ -18,16 +18,18 @@ export function Header ({ className = '', title }) {
             urlPathname !== '/login' && <Link href="/login">Login</Link>
           )
         : (
-        <p className="m-0 flex gap-2">
-          <span>Hello, {user.name}. You&apos;re logged in.</span>
-          <Link href="/profile">Access profile</Link>
-          <Button
-            onClick={() => signOut()}
-            className="inline-block p-0 px-1 text-xs"
-          >
-            Logout
-          </Button>
-        </p>
+        <div className="flex items-center justify-between gap-2">
+          <span>Hello, {user.name}.</span>
+          <div className="flex items-center gap-2">
+            <Link href="/profile">Profile</Link>
+            <Button
+              onClick={() => signOut()}
+              className="inline-block p-1 text-xs"
+            >
+              Logout
+            </Button>
+          </div>
+        </div>
           )}
     </header>
   )
