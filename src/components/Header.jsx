@@ -1,8 +1,8 @@
 import { signOut } from 'fastify-next-auth/client'
 
-import { Link } from '@/renderer/Link.jsx'
-import { usePageContext } from '@/renderer/usePageContext.jsx'
-import { Button } from './Button.jsx'
+import { Link } from '@/renderer/Link'
+import { usePageContext } from '@/renderer/usePageContext'
+import { Button } from './Button'
 
 export function Header ({ className = '', title }) {
   const { urlPathname, user } = usePageContext()

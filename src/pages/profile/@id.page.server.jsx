@@ -11,13 +11,13 @@ export async function onBeforeRender (pageContext) {
 
   const { id } = pageContext.routeParams
 
-  let json
+  let json = {}
 
   if (id === pageContext.user?.id) {
     json = pageContext.user
-  } else {
-    json = await getUserById(id, pageContext.cookie)
   }
+
+  json = { ...json, ...(await getUserById(id, pageContext.cookie)) }
 
   return {
     pageContext: {

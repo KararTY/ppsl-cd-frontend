@@ -1,6 +1,7 @@
 import ReactDOMServer from 'react-dom/server'
-import { PageShell } from './PageShell.jsx'
 import { escapeInject, dangerouslySkipEscape } from 'vite-plugin-ssr/server'
+
+import { PageShell } from './PageShell'
 
 // See https://vite-plugin-ssr.com/data-fetching
 export const passToClient = ['pageProps', 'urlPathname', 'user', 'redirectTo']
