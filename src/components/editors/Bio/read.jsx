@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { createHeadlessEditor } from '@lexical/headless'
 import { $generateHtmlFromNodes } from '@lexical/html'
 
-import { theme } from '../theme.js'
+import { theme } from '../theme'
 
 export function BioHTML ({ initialContent }) {
   const [html, setHTML] = useState('<span>Loading...</span>')
