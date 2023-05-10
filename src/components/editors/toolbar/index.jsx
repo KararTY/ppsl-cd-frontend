@@ -43,13 +43,15 @@ const Button = ({ children, className = '', ...restProps }) => {
   )
 }
 
-const ButtonIcon = ({ Icon, className, ...restProps }) => {
+const ButtonIcon = ({ Icon, active, className, ...restProps }) => {
   return (
     <Button
-      className={`!px-1 disabled:border-slate-500 disabled:bg-slate-500 disabled:bg-opacity-25 ${className}`}
+      className={`!px-1 disabled:border-slate-500 disabled:bg-slate-500 disabled:bg-opacity-25 ${
+        active ? 'bg-[var(--primary)] text-white' : ''
+      } ${className}`}
       {...restProps}
     >
-      <Icon size="0.75rem" />
+      {Icon && <Icon size="0.75rem" />}
     </Button>
   )
 }
@@ -75,6 +77,8 @@ export function Toolbar ({ title = '' }) {
 
   const updateToolbar = useCallback(() => {
     const selection = $getSelection()
+    if (!selection?.hasFormat) return
+
     setIsBold(selection.hasFormat('bold'))
     setIsItalic(selection.hasFormat('italic'))
   }, [editor])
@@ -141,23 +145,15 @@ export function Toolbar ({ title = '' }) {
       ref={toolbarRef}
       className="sticky top-0 z-50 m-0 flex flex-col gap-2 p-3 shadow-sm"
     >
-      <div className="flex items-center gap-1">
-        <strong className="grow">{title}</strong>
-        <Button
-          className={!editor.isEditable ? 'bg-[var(--primary)] text-white' : ''}
-        >
-          Preview
-        </Button>
-        <Button
-          className={editor.isEditable ? 'bg-[var(--primary)] text-white' : ''}
-        >
-          Edit
-        </Button>
-      </div>
+      {title !== false && (
+        <div className="flex items-center gap-1">
+          <strong className="grow">{title}</strong>
+        </div>
+      )}
 
       {editor.isEditable() && (
         <>
-          <hr />
+          {title !== false && <hr />}
 
           <div className="flex gap-1">
             <ButtonIcon
@@ -196,7 +192,7 @@ export function Toolbar ({ title = '' }) {
                 editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold')
               }
               aria-label="Format Bold"
-              className={isBold ? 'bg-[var(--primary)] text-white' : ''}
+              active={isBold}
               Icon={BoldIcon}
             />
             <ButtonIcon
@@ -204,9 +200,11 @@ export function Toolbar ({ title = '' }) {
                 editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic')
               }
               aria-label="Format Italic"
-              className={isItalic ? 'bg-[var(--primary)] text-white' : ''}
+              active={isItalic}
               Icon={ItalicIcon}
             />
+
+            {/* <Divider /> */}
           </div>
         </>
       )}

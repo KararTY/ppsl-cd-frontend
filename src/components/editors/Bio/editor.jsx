@@ -1,43 +1,26 @@
+import { useState } from 'react'
+import { encode } from '@msgpack/msgpack'
+
 import { LexicalComposer } from '@lexical/react/LexicalComposer'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
 import { ContentEditable } from '@lexical/react/LexicalContentEditable'
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin'
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 
-import { editableEditorTheme, readOnlyTheme, theme } from '../theme'
+import { defaultTheme, editableEditorTheme, readOnlyTheme } from '../theme'
 import { Toolbar } from '../toolbar/index'
-import { Button } from '../../Button'
-import { encode } from '@msgpack/msgpack'
-
-function Placeholder () {
-  return (
-    <div className="pointer-events-none absolute left-0 top-0 select-none overflow-hidden text-ellipsis p-3">
-      Enter some <strong>rich text</strong>...
-    </div>
-  )
-}
-
-function FormSubmitWithEditor ({ children, onSubmit, ...restProps }) {
-  const [editor] = useLexicalComposerContext()
-
-  const onSubmitCatch = (event) => {
-    onSubmit({ event, editor })
-  }
-
-  return (
-    <form onSubmit={onSubmitCatch} className="m-0" {...restProps}>
-      {children}
-    </form>
-  )
-}
+import { Placeholder } from '../components/placeholder'
+import { Editor } from '../components/editor'
+import { EditorFooter } from '../components/footer'
 
 /**
  * @param {{readOnly, post, initialContent}} props
  */
 export function BioEditor (props) {
   const { readOnly = false, post = {}, initialContent } = props
+
+  const [isSaving, setIsSaving] = useState(false)
 
   const onSubmitBio = async ({ event, editor }) => {
     event.preventDefault()
@@ -48,23 +31,32 @@ export function BioEditor (props) {
     const headers = new Headers()
     headers.append('content-type', 'application/json')
 
-    await fetch('/api/users/', {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({
-        content: encodedContent
-      })
-    })
+    setIsSaving(true)
 
-    window.location.reload()
+    try {
+      const res = await fetch('/api/users/', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          content: encodedContent
+        })
+      })
+
+      if (res.status >= 200 && res.status < 300) window.location.reload()
+      else throw res
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   /**
    * @type {import("@lexical/react/LexicalComposer").InitialConfigType}
    */
-  const editorConfig = {
+  const config = {
     // The editor theme
-    theme,
+    theme: defaultTheme,
     // Handling of errors during update
     onError (error) {
       throw error
@@ -76,40 +68,44 @@ export function BioEditor (props) {
   }
 
   if (initialContent) {
-    editorConfig.editorState = initialContent
+    config.editorState = initialContent
   }
 
   const editorTheme = !readOnly ? editableEditorTheme : readOnlyTheme
 
+  config.theme = { ...config.theme, ...editorTheme }
+
   return (
-    <LexicalComposer initialConfig={editorConfig}>
-      <FormSubmitWithEditor onSubmit={onSubmitBio}>
-        <article className={editorTheme.article}>
+    <LexicalComposer initialConfig={config}>
+      <Editor onSubmit={onSubmitBio}>
+        <article className={config.theme.article}>
           {!readOnly && (
             <Toolbar
               title={`${!readOnly ? 'Editing ' : ''}${post.title || 'Post'}`}
             />
           )}
-          <div className={editorTheme.body}>
+
+          <div className={config.theme.body}>
             <RichTextPlugin
-              placeholder={!readOnly && <Placeholder />}
+              placeholder={
+                !readOnly && (
+                  <Placeholder>
+                    Enter some <strong>rich text</strong>...
+                  </Placeholder>
+                )
+              }
               contentEditable={
-                <ContentEditable className={editorTheme.contentEditable} />
+                <ContentEditable className={config.theme.contentEditable} />
               }
               ErrorBoundary={LexicalErrorBoundary}
             />
             <HistoryPlugin />
             <AutoFocusPlugin />
           </div>
-          {!readOnly && (
-            <footer className="m-0 flex justify-end p-3">
-              <Button type="submit" className="w-auto p-1 px-2">
-                Save
-              </Button>
-            </footer>
-          )}
+
+          {!readOnly && <EditorFooter isSaving={isSaving} />}
         </article>
-      </FormSubmitWithEditor>
+      </Editor>
     </LexicalComposer>
   )
 }
