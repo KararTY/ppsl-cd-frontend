@@ -7,7 +7,7 @@ import { tryParseContent } from '@/lib/api/posts/utils'
 
 import { ReviewTitle } from '@/components/review/Title'
 import { EntityHTML } from '@/components/ppsl-cd-lexical-shared/src/editors/Entity/read'
-import { useGetReviewsByPostId } from '@/lib/api/posts'
+import { Tags } from '@/components/post/Tags'
 import { ReviewsList } from '@/components/review/List'
 
 export function Page (pageProps) {
@@ -30,6 +30,8 @@ export function Page (pageProps) {
           createdTimestamp={createdTimestamp}
           edit={{ href: `${urlPathname}/edit` }}
         />
+
+        <Tags relations={request.outRelations} />
 
         <EntityHTML initialContent={parsedContent} />
 
