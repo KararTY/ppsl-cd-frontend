@@ -76,12 +76,10 @@ export function Page (pageProps) {
           <div className="flex flex-wrap gap-1">
             <span>Author{authors.length > 1 && 's'}: </span>
             {authors.map((author, index, arr) => (
-              <>
-                <Link key={author.id} href={`/profile/${author.id}`}>
-                  {author.name}
-                  {index < arr.length - 1 && ', '}
-                </Link>
-              </>
+              <Link key={author.id} href={`/profile/${author.id}`}>
+                {author.name}
+                {index < arr.length - 1 && ', '}
+              </Link>
             ))}
           </div>
         </div>
