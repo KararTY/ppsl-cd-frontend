@@ -1,4 +1,4 @@
-import { SettingsIcon } from 'lucide-react'
+import { LockIcon } from 'lucide-react'
 
 /**
  * @param {{ relations: Array<{isSystem: boolean, toPost: { id: string, postHistory: Array<{language: string, title: string}>}> } }}
@@ -11,8 +11,9 @@ export function Tags ({ relations = [] }) {
           key={toPost.id}
           className="flex items-center gap-1 rounded bg-gray-500 bg-opacity-25 p-1 text-xs leading-none no-underline"
           href={`/post/${toPost.id}`}
+          title={isSystem ? 'System tag' : undefined}
         >
-          {isSystem && <SettingsIcon size={'1em'} />}
+          {isSystem && <LockIcon size={'1em'} />}
           <span>{toPost.postHistory[0].title}</span>
         </a>
       ))}
