@@ -1,42 +1,53 @@
 import { useState } from 'react'
 import { encode } from '@msgpack/msgpack'
-
-import { Container } from '@/components/Container'
-import { Link } from '@/renderer/Link'
-import { EntityEditor } from '@/components/ppsl-cd-lexical-shared/src/editors/Entity/editor'
 import { Loader2Icon } from 'lucide-react'
 
-export function Page () {
-  const [language, setLanguage] = useState('en')
+import { Link } from '@/renderer/Link'
 
+import { EntityEditor } from '@/components/ppsl-cd-lexical-shared/src/editors/Entity/editor'
+
+import { Container } from '@/components/Container'
+import { InputTitle } from '@/components/inputs/Title'
+
+const LANGUAGE = 'language'
+const TITLE = 'title'
+
+export function Page () {
   const [isSaving, setIsSaving] = useState(false)
 
-  const [title, setTitle] = useState('')
-  const [titleError, setTitleError] = useState('Required!')
-  const handleTitleChange = (e) => {
-    const value = e.target.value.trimStart()
+  const [form, setForm] = useState({
+    [TITLE]: '',
+    [LANGUAGE]: 'en',
+    errors: new Map()
+  })
 
-    if (value.length === 0) {
-      setTitleError('Required!')
+  const handleFormChange = ({ name, value, error }) => {
+    const newForm = { ...form }
+
+    newForm[name] = value
+
+    if (error) {
+      newForm.errors.set(name, error)
     } else {
-      setTitleError(null)
+      newForm.errors.delete(name)
     }
 
-    setTitle(value)
+    setForm(newForm)
   }
 
   const handleLanguageChange = (e) => {
-    setLanguage(e.target.value)
+    handleFormChange({ name: LANGUAGE, value: e.target.value })
   }
 
   const handleSubmit = async ({ event, editor }) => {
     event.preventDefault()
 
+    const { title, language, errors } = form
+
+    if (errors.size > 0) return
+
     const content = editor.getEditorState().toJSON()
     const encodedContent = encode(content).toString()
-
-    const headers = new Headers()
-    headers.append('content-type', 'application/json')
 
     const body = {
       title: title.trim(),
@@ -44,11 +55,12 @@ export function Page () {
       content: encodedContent
     }
 
-    if (body.title.length === 0 || titleError) return
-
     setIsSaving(true)
 
     try {
+      const headers = new Headers()
+      headers.append('content-type', 'application/json')
+
       const res = await fetch('/api/posts/', {
         method: 'POST',
         headers,
@@ -71,7 +83,7 @@ export function Page () {
 
   return (
     <Container>
-      <div className="p-4">
+      <div className="p-4 px-8">
         <hgroup>
           <h3 className="m-0">Creating a new entity</h3>
           <h4 className="text-gray-500 dark:text-gray-400">
@@ -86,19 +98,16 @@ export function Page () {
           ? (
           <div className="flex items-start gap-2">
             <label className="m-0 grow">
-              <input
-                className="!m-0"
-                placeholder="Title"
-                value={title}
-                onChange={handleTitleChange}
-                required
+              <InputTitle
+                name={TITLE}
+                initialValue={form.title}
+                handleChange={handleFormChange}
               />
-              {titleError && <span className="text-red-500">{titleError}</span>}
             </label>
             <select
               className="!m-0 !w-[unset] shrink"
               placeholder="Language"
-              value={language}
+              value={form.language}
               onChange={handleLanguageChange}
             >
               <option value="en">English (Default)</option>
