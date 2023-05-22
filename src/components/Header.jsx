@@ -9,7 +9,7 @@ export function Header ({ className = '', title }) {
 
   return (
     <header
-      className={`mx-0 mb-0 ${className} flex items-end justify-between gap-2`}
+      className={`mx-0 mb-0 ${className} flex items-end justify-between gap-2 px-8`}
     >
       <a href="/">
         <hgroup className="m-0 flex flex-col items-start justify-end gap-2">

@@ -10,7 +10,7 @@ export function ReviewsList ({ postId }) {
       <strong>Latest reviews</strong>
       {!isLoading && !isFetching
         ? (
-        <div className="columns-2">
+        <div className="flex flex-col lg:block lg:columns-2">
           {response?.result?.map((review) => (
             <ReviewCard
               key={review.id}

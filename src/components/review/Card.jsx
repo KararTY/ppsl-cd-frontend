@@ -53,8 +53,10 @@ export function ReviewCard ({ type, user, id, lastUpdated, postHistory }) {
       <header className="m-0 p-0 dark:bg-gray-500 dark:bg-opacity-10">
         <Link href={urlToReview} className="flex items-center p-3 no-underline">
           <div className="flex grow flex-col">
-            <span>{user.name}</span>
-            <small className="text-xs">{timestamp}</small>
+            <span>{title}</span>
+            <small className="text-xs">
+              {user.name} - {timestamp}
+            </small>
           </div>
           <div
             className={`h-12 w-12 bg-opacity-75 ${color} flex items-center justify-center text-white text-opacity-75`}
@@ -65,7 +67,6 @@ export function ReviewCard ({ type, user, id, lastUpdated, postHistory }) {
       </header>
 
       <div className="inline-block w-full p-3 dark:bg-gray-600 dark:bg-opacity-10">
-        <h4 className="m-0 mb-2 last:mb-0">{title || <i>Missing title!</i>}</h4>
         <BioHTML
           className="line-clamp-[12]"
           ref={contentRef}
