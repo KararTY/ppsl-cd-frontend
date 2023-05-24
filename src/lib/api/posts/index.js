@@ -15,18 +15,23 @@ export async function getPostById (id) {
   return await res.json()
 }
 
-export async function getPostsByTitle (title) {
+export async function getPostsByTitle (title, filter = []) {
   const url = new URL('./posts/filter', API_ENDPOINT)
 
   const query = {
-    postHistory: {
-      some: {
-        title: {
-          startsWith: title,
-          mode: 'insensitive'
+    AND: [
+      {
+        postHistory: {
+          some: {
+            title: {
+              startsWith: title,
+              mode: 'insensitive'
+            }
+          }
         }
-      }
-    }
+      },
+      ...filter
+    ]
   }
 
   const res = await fetch(url, {
