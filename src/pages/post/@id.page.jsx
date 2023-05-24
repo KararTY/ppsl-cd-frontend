@@ -32,7 +32,8 @@ export function Page (pageProps) {
   const isEntity = isOfPostType(request.outRelations, 'entity')
   const isReview = isOfPostType(request.outRelations, 'review')
   const isBio = isOfPostType(request.outRelations, 'bio')
-  const isSystem = isOfPostType(request.outRelations, 'system')
+  const isSystem =
+    isOfPostType(request.outRelations, 'system') || request.id === 'system'
 
   const editURL = getEditURLForPost(urlPathname, request.outRelations)
 
@@ -114,7 +115,6 @@ export function Page (pageProps) {
         {isEntity && <EntityHTML initialContent={parsedContent} />}
         {(isBio || isReview) && <BioHTML initialContent={parsedContent} />}
 
-
         <div className="mt-8 flex flex-col gap-2 text-xs text-gray-500 dark:text-gray-400">
           <span>
             &quot;{title}&quot; post created: {createdTimestamp}
@@ -143,7 +143,9 @@ export function Page (pageProps) {
           </>
         )}
 
-        {isSystem && <PostList post={request} />}
+        {!isReview && !isBio && (
+          <PostList post={request} isSystem={isSystem || undefined} />
+        )}
       </div>
     </Container>
   )

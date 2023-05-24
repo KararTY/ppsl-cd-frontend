@@ -5,7 +5,7 @@ import { useGetLatestPostsByFilter } from '@/lib/api/posts'
 import { PostCard } from './Card'
 import { PaginationButtons } from '../PaginationButtons'
 
-export function PostList ({ post }) {
+export function PostList ({ post, isSystem }) {
   const [{ title }] = post.postHistory
 
   const [page, setPage] = useState(0)
@@ -13,6 +13,7 @@ export function PostList ({ post }) {
     useGetLatestPostsByFilter(page, {
       outRelations: {
         some: {
+          isSystem,
           toPostId: post.id
         }
       }
@@ -22,10 +23,19 @@ export function PostList ({ post }) {
     <>
       <hr className="my-8" />
       <div className="flex flex-col gap-2">
-        <strong>Latest edited posts with relation &quot;{title}&quot;</strong>
+        <strong>
+          Latest edited posts {isSystem ? 'in relation to' : 'mentioning'}{' '}
+          &quot;{title}&quot;
+        </strong>
 
-        {!isLoading && !isFetching
-          ? (
+        {(isLoading || isFetching) && (
+          <label className="flex flex-col gap-2">
+            <span>Loading...</span>
+            <progress />
+          </label>
+        )}
+
+        {response?.result?.length > 0 && (
           <>
             <PaginationButtons
               size="small"
@@ -45,13 +55,24 @@ export function PostList ({ post }) {
               canContinue={canContinue}
             />
           </>
-            )
-          : (
-          <label className="flex flex-col gap-2">
-            <span>Loading...</span>
-            <progress />
-          </label>
-            )}
+        )}
+
+        {response?.result?.length === 0 && (
+          <>
+            <p className="m-0 text-xs">
+              No entities are currently {isSystem ? 'related to' : 'mentioning'}{' '}
+              this{isSystem && ' system'} entity.{' '}
+            </p>
+            <p className="m-0 text-xs">
+              {!isSystem && (
+                <span className="text-gray-500">
+                  Can be mentioned by typing <code>@{title}</code> in the editor
+                  of other entities.
+                </span>
+              )}
+            </p>
+          </>
+        )}
       </div>
     </>
   )
