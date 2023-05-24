@@ -45,7 +45,7 @@ export async function getUserReviewByPostId (id, cookie) {
   return await res.json()
 }
 
-export function useGetLatestPosts (page = 0) {
+export function useGetLatestPostsByFilter (page = 0, filter) {
   const [cursor, setCursor] = useState()
 
   const { error, isInitialLoading, isLoading, isFetching, data } = useQuery({
@@ -57,39 +57,7 @@ export function useGetLatestPosts (page = 0) {
         url.searchParams.append('cursor', cursor)
       }
 
-      const body = {
-        AND: [
-          {
-            outRelations: {
-              some: {
-                toPostId: {
-                  not: 'system'
-                }
-              }
-            }
-          },
-          {
-            outRelations: {
-              some: {
-                isSystem: true,
-                toPostId: {
-                  not: 'bio'
-                }
-              }
-            }
-          },
-          {
-            outRelations: {
-              some: {
-                isSystem: true,
-                toPostId: {
-                  not: 'review'
-                }
-              }
-            }
-          }
-        ]
-      }
+      const body = filter
 
       const res = await fetch(url, {
         method: 'POST',
@@ -110,10 +78,13 @@ export function useGetLatestPosts (page = 0) {
     cacheTime: Infinity
   })
 
+  const canContinue =
+    !!cursor && cursor !== data.result[data.result.length - 1].id
+
   return {
     error,
     page,
-    canContinue: !!cursor,
+    canContinue,
     response: data,
     isLoading,
     isFetching,
@@ -148,10 +119,13 @@ export function useGetReviewsByPostId (postId, page = 0) {
     cacheTime: Infinity
   })
 
+  const canContinue =
+    !!cursor && cursor !== data.result[data.result.length - 1].id
+
   return {
     error,
     page,
-    canContinue: !!cursor,
+    canContinue,
     response: data,
     isLoading,
     isFetching,
