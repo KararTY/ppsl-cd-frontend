@@ -30,7 +30,7 @@ export function Page (pageProps) {
 
   const isEntity = isOfPostType(request.outRelations, 'entity')
   const isReview = isOfPostType(request.outRelations, 'review')
-  // const isSystem = isOfPostType(request.outRelations, 'system')
+  const isBio = isOfPostType(request.outRelations, 'bio')
 
   const editURL = getEditURLForPost(urlPathname, request.outRelations)
 
@@ -103,7 +103,7 @@ export function Page (pageProps) {
         )}
 
         {isEntity && <EntityHTML initialContent={parsedContent} />}
-        {isReview && <BioHTML initialContent={parsedContent} />}
+        {(isBio || isReview) && <BioHTML initialContent={parsedContent} />}
 
         {isEntity && (
           <>
