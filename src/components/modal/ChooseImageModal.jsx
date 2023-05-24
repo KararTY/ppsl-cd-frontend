@@ -1,32 +1,11 @@
-import { Button } from '../Button'
 import { useState } from 'react'
+
 import { useWikimediaCommonsQueryAllImages } from '@/lib/api/wikimedia'
-import { DebouncedInput } from '../DebouncedInput'
 import { filterByFileNameExtension } from '@/lib/filename'
 
-/**
- * @param {{ onClick: () => {}, page: number, canContinue: any }}
- */
-const PaginationButtons = ({ onClick, page, canContinue }) => {
-  return (
-    <div className="flex gap-2">
-      <Button
-        className="!w-1/2"
-        disabled={page === 0}
-        onClick={() => onClick(page - 1)}
-      >
-        Previous
-      </Button>
-      <Button
-        className="!w-1/2"
-        onClick={() => onClick(page + 1)}
-        disabled={!canContinue}
-      >
-        Next
-      </Button>
-    </div>
-  )
-}
+import { Button } from '../Button'
+import { DebouncedInput } from '../DebouncedInput'
+import { PaginationButtons } from '../PaginationButtons'
 
 /**
  * @param {{ image: any, onClick: () => {}, selected: boolean }}
