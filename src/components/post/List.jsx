@@ -5,7 +5,7 @@ import { useGetLatestPostsByFilter } from '@/lib/api/posts'
 import { PostCard } from './Card'
 import { PaginationButtons } from '../PaginationButtons'
 
-export function PostList ({ post, isSystem }) {
+export function PostsList ({ post, isSystem }) {
   const [{ title }] = post.postHistory
 
   const [page, setPage] = useState(0)

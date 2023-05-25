@@ -18,7 +18,7 @@ import { Tags } from '@/components/post/Tags'
 import { ReviewsList } from '@/components/review/List'
 import useFormattedDate from '@/components/useFormattedDate'
 import { typeToColorClassAndIcon } from '@/components/review/Card'
-import { PostList } from '@/components/post/List'
+import { PostsList } from '@/components/post/List'
 
 export function Page (pageProps) {
   const { urlPathname } = usePageContext()
@@ -144,7 +144,7 @@ export function Page (pageProps) {
         )}
 
         {!isReview && !isBio && (
-          <PostList post={request} isSystem={isSystem || undefined} />
+          <PostsList post={request} isSystem={isSystem || undefined} />
         )}
       </div>
     </Container>

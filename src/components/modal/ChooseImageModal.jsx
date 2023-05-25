@@ -63,10 +63,10 @@ const Result = ({ image, onClick, selected }) => {
 }
 
 /**
- * @param {{ data, onClose: function, onSubmit: (data, url) => {} }} props
+ * @param {{ data, onClose: () => {}, onSubmit: (data, url) => {} }} props
  */
 export function ChooseImageModal (props) {
-  const { data, onClose = () => {}, onSubmit } = props
+  const { data, onClose, onSubmit } = props
 
   const [page, setPage] = useState(0)
   const [query, setQuery] = useState('')
@@ -96,7 +96,7 @@ export function ChooseImageModal (props) {
               href="#close"
               aria-label="close"
               className="close"
-              onClick={() => onClose()}
+              onClick={() => onClose?.()}
             />
             <h4 className="m-0">Choose image from Wikimedia Commons</h4>
           </header>
@@ -180,7 +180,7 @@ export function ChooseImageModal (props) {
             <Button
               type="button"
               className="mb-2 w-full"
-              onClick={() => onClose()}
+              onClick={() => onClose?.()}
             >
               Cancel
             </Button>
