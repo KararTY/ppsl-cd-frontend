@@ -21,7 +21,7 @@ import { Reviews } from '@/components/review'
 
 export function Page (pageProps) {
   const { urlPathname } = usePageContext()
-  const { request } = pageProps
+  const { request, html } = pageProps
 
   const [{ title, content }] = request.postHistory
   const [authors, setAuthors] = useState([])
@@ -111,8 +111,16 @@ export function Page (pageProps) {
           <Tags relations={request.outRelations} />
         )}
 
-        {isEntity && <EntityHTML initialContent={parsedContent} />}
-        {(isBio || isReview) && <BioHTML initialContent={parsedContent} />}
+        {html
+          ? (
+          <div dangerouslySetInnerHTML={{ __html: html }} />
+            )
+          : (
+          <>
+            {isEntity && <EntityHTML initialContent={parsedContent} />}
+            {(isBio || isReview) && <BioHTML initialContent={parsedContent} />}
+          </>
+            )}
 
         <div className="mt-8 flex flex-col gap-2 text-xs text-gray-500 dark:text-gray-400">
           <span>
