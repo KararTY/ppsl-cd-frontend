@@ -43,7 +43,7 @@ const Result = ({ image, onClick, selected }) => {
         <>
           <div
             data-unblur-text={blur ? 'Unblur' : ''}
-            className="relative flex w-full grow items-center justify-center after:absolute after:content-[attr(data-unblur-text)]"
+            className="relative flex min-h-[100px] w-full grow items-center justify-center after:absolute after:content-[attr(data-unblur-text)]"
             onClick={handleUnblurClick}
           >
             <img src={image.url} className={blur ? 'blur-3xl' : ''} />
@@ -90,7 +90,7 @@ export function ChooseImageModal (props) {
   return (
     <form onSubmit={onSubmitCatch}>
       <dialog role="dialog" open>
-        <article className="!container">
+        <article className="!container relative pb-0">
           <header>
             <a
               href="#close"
@@ -176,15 +176,21 @@ export function ChooseImageModal (props) {
             </>
               )}
 
-          <footer>
+          <footer className="sticky bottom-0 mb-0 flex gap-4">
             <Button
               type="button"
-              className="mb-2 w-full"
+              className="w-full"
               onClick={() => onClose?.()}
             >
               Cancel
             </Button>
-            <button disabled={!selectedImage}>Submit</button>
+            <Button
+              type={undefined}
+              className="w-full"
+              disabled={!selectedImage}
+            >
+              Submit
+            </Button>
           </footer>
         </article>
       </dialog>
