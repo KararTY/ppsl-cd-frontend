@@ -61,7 +61,10 @@ const Result = ({ image, onClick, selected }) => {
             className="relative flex min-h-[100px] w-full grow items-center justify-center after:absolute after:content-[attr(data-unblur-text)]"
             onClick={handleUnblurClick}
           >
-            <img src={image.url} className={blur ? 'blur-3xl' : ''} />
+            <img
+              src={image.url}
+              className={`${blur ? 'blur-3xl' : ''} max-h-96`}
+            />
           </div>
           {selected && (
             <div className="absolute bottom-0 left-0 w-full bg-[#1095c1] p-2 leading-none text-white">
@@ -115,7 +118,7 @@ export function ChooseImageModal (props) {
               className="close"
               onClick={() => onClose?.()}
             />
-            <h4 className="m-0">Choose image from Wikimedia Commons</h4>
+            <h4 className="m-0">Choose image</h4>
           </header>
 
           <div>
@@ -133,18 +136,23 @@ export function ChooseImageModal (props) {
               .
             </strong>
           </div>
-          <DebouncedInput
-            className="!my-1"
-            name="query"
-            placeholder="Search..."
-            value={query}
-            onChange={(value) => {
-              setQuery(() => {
-                setPage(0)
-                return value
-              })
-            }}
-          />
+          <div className="flex flex-col items-center justify-center sm:flex-row sm:gap-2">
+            <DebouncedInput
+              className="!my-1"
+              name="query"
+              placeholder="Search..."
+              value={query}
+              onChange={(value) => {
+                setQuery(() => {
+                  setPage(0)
+                  return value
+                })
+              }}
+            />
+            <select className="m-0 w-full sm:w-64">
+              <option value="commons">Wikimedia Commons</option>
+            </select>
+          </div>
 
           <div className="mb-4">
             <strong>
@@ -193,7 +201,7 @@ export function ChooseImageModal (props) {
             </>
               )}
 
-          <footer className="sticky bottom-0 mb-0 flex gap-4 py-4">
+          <footer className="sticky bottom-0 mb-0 flex h-12 gap-4 bg-[#18232c] py-2">
             <Button
               type="button"
               className="w-full p-2 text-sm leading-none"
