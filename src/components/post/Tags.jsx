@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { LockIcon, MoreHorizontalIcon, TagsIcon, XIcon } from 'lucide-react'
 
-import { Link } from '@/renderer/Link'
+import { Link } from '#/renderer/Link'
 import { Button } from '../Button'
 
 /**

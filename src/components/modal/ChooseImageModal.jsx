@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { CheckCircleIcon, CircleDashedIcon } from 'lucide-react'
 
-import { useWikimediaCommonsQueryAllImages } from '@/lib/api/wikimedia'
-import { filterByFileNameExtension } from '@/lib/filename'
+import { useWikimediaCommonsQueryAllImages } from '#/lib/api/wikimedia'
+import { filterByFileNameExtension } from '#/lib/filename'
 
 import { titleFromURLString } from '../ppsl-cd-lexical-shared/src/editors/Entity/editor'
 

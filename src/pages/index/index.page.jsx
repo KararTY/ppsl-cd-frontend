@@ -1,12 +1,12 @@
 import { useState } from 'react'
 
-import { Link } from '@/renderer/Link'
+import { Link } from '#/renderer/Link'
 
-import { API_ENDPOINT, usePaginatedEndpoint } from '@/lib/api/posts'
+import { API_ENDPOINT, usePaginatedEndpoint } from '#/lib/api/posts'
 
-import { PostCard, PostCardPlaceholder } from '@/components/post/Card'
-import { Container } from '@/components/Container'
-import { PaginationButtons } from '@/components/PaginationButtons'
+import { PostCard, PostCardPlaceholder } from '#/components/post/Card'
+import { Container } from '#/components/Container'
+import { PaginationButtons } from '#/components/PaginationButtons'
 
 const latestPostsFilter = {
   AND: [

@@ -1,4 +1,4 @@
-import { Link } from '@/renderer/Link'
+import { Link } from '#/renderer/Link'
 
 import useFormattedDate from '../useFormattedDate'
 
