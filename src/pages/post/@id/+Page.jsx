@@ -4,7 +4,6 @@ import { CalendarIcon, ChevronLeftIcon, UserIcon } from 'lucide-react'
 import { Link } from '#/renderer/Link'
 import { usePageContext } from '#/renderer/usePageContext'
 
-import { tryParseContent } from '#/lib/api/posts/utils'
 import { getAuthorsForPostId } from '#/lib/api/posts'
 import { getEditURLForPost, isOfPostType } from '#/lib/post'
 
@@ -18,33 +17,36 @@ import useFormattedDate from '#/components/useFormattedDate'
 import { PostsList } from '#/components/post/List'
 import { Reviews } from '#/components/review'
 import { typeToColorClassAndIcon } from '#/components/review/utils'
+import { stringToUint8Array } from '#/lib/yjs'
 
 export default function Page (pageProps) {
   const { urlPathname } = usePageContext()
   const { request, html } = pageProps
 
-  const [{ title, content }] = request.postHistory
+  const { post, update } = request
+
+  const [{ title, createdTimestamp: lastUpdated }] = post.postUpdates
   const [authors, setAuthors] = useState([])
 
-  const parsedContent = tryParseContent(content, true)
+  const parsedContent = stringToUint8Array(update)
 
-  const isEntity = isOfPostType(request.outRelations, 'entity')
-  const isReview = isOfPostType(request.outRelations, 'review')
-  const isBio = isOfPostType(request.outRelations, 'bio')
+  const isEntity = isOfPostType(post.outRelations, 'entity')
+  const isReview = isOfPostType(post.outRelations, 'review')
+  const isBio = isOfPostType(post.outRelations, 'bio')
   const isSystem =
-    isOfPostType(request.outRelations, 'system') || request.id === 'system'
+    isOfPostType(post.outRelations, 'system') || post.id === 'system'
 
-  const editURL = getEditURLForPost(urlPathname, request.outRelations)
+  const editURL = getEditURLForPost(urlPathname, post.outRelations)
 
   const isAuthor = authors.some((author) => author.id === pageProps.user?.id)
 
-  const createdTimestamp = useFormattedDate(request.createdTimestamp)
+  const createdTimestamp = useFormattedDate(post.createdTimestamp)
 
   useEffect(() => {
     let cancel = false
 
     async function getAuthors () {
-      const authorsRes = await getAuthorsForPostId(request.id)
+      const authorsRes = await getAuthorsForPostId(post.id)
       if (!cancel) setAuthors(authorsRes)
     }
 
@@ -53,7 +55,7 @@ export default function Page (pageProps) {
     return () => {
       cancel = true
     }
-  }, [request.id])
+  }, [post.id])
 
   return (
     <Container>
@@ -97,19 +99,17 @@ export default function Page (pageProps) {
 
         <PostTitle
           title={title}
-          timestamp={request.lastUpdated}
-          edit={
-            isReview
-              ? isAuthor
-                ? { href: `/post/${request.reviewing.toPost.id}/review` }
-                : null
-              : { href: editURL }
-          }
+          timestamp={lastUpdated}
+          // edit={
+          //   isReview
+          //     ? isAuthor
+          //       ? { href: `/post/${request.reviewing.toPost.id}/review` }
+          //       : null
+          //     : { href: editURL }
+          // }
         />
 
-        {!!request.outRelations.length && (
-          <Tags relations={request.outRelations} />
-        )}
+        {!!post.outRelations.length && <Tags relations={post.outRelations} />}
 
         {html
           ? (
@@ -150,12 +150,12 @@ export default function Page (pageProps) {
           </div>
         </div>
 
-        {isEntity && (
+        {/* isEntity && (
           <>
             <hr className="my-8" />
             <Reviews postId={request.id} />
           </>
-        )}
+        ) */}
 
         {!isReview && !isBio && (
           <PostsList post={request} isSystem={isSystem || undefined} />

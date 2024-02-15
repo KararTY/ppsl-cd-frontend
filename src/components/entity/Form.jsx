@@ -49,6 +49,8 @@ export function EntityForm ({ entity }) {
 
     const content = editor.getEditorState().toJSON()
 
+    // encodeStateVector
+
     const body = {
       title,
       language,

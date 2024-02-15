@@ -43,7 +43,7 @@ function Result ({ image, onClick, selected }) {
       {isSupported
         ? (
         <>
-          <div className="flex w-full items-center justify-center gap-2 rounded rounded-b-none border-t border-blue-500 bg-blue-900 bg-opacity-75 p-2 text-white">
+          <div className="flex w-full items-center justify-center gap-2 bg-blue-900 bg-opacity-75 p-2 text-white">
             <span className="text-ellipsis text-sm sm:text-base">
               {fileName}
             </span>
@@ -105,15 +105,15 @@ export function ChooseImageModal (props) {
   return (
     <form onSubmit={onSubmitCatch}>
       <dialog role="dialog" open>
-        <article className="!container relative pb-0">
-          <header>
+        <article className="!container relative rounded py-0">
+          <header className="sticky top-0 z-10 mt-0 py-5">
             <a
               href="#close"
               aria-label="close"
               className="close"
               onClick={() => onClose?.()}
             />
-            <h4 className="m-0">Choose image</h4>
+            <h6 className="m-0">Choose image</h6>
           </header>
 
           <div className="text-sm sm:text-base">
@@ -149,7 +149,7 @@ export function ChooseImageModal (props) {
             </select>
           </div>
 
-          <div className="mb-4 text-sm sm:text-base">
+          <div className="mb-8 text-sm sm:text-base">
             <strong>
               Wikimedia Commons is a global repository of images.{' '}
               <span className="text-red-500">
@@ -169,7 +169,7 @@ export function ChooseImageModal (props) {
                   page={page}
                   canContinue={canContinue}
                 />
-                <div className="my-2 !grid auto-rows-auto grid-cols-1 gap-4 rounded-xl bg-gray-500 bg-opacity-10 p-4 sm:grid-cols-2">
+                <div className="my-4 !grid auto-rows-auto grid-cols-1 gap-2 rounded-xl bg-gray-500 bg-opacity-10 sm:grid-cols-2">
                   {response?.query?.allimages?.map((image) => (
                     <Result
                       key={image.name}

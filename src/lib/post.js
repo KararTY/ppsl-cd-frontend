@@ -1,6 +1,7 @@
 export function isOfPostType (relations, type) {
   return relations.some(
-    (relation) => relation.isSystem && relation.toPost.id === type
+    (relation) =>
+      relation.isSystem && (relation.toPost?.id || relation.toPostId) === type
   )
 }
 

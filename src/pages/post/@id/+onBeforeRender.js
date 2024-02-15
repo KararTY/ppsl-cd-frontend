@@ -1,6 +1,5 @@
-import { isOfPostType } from '#/lib/post'
 import { getPostById } from '#/lib/api/posts'
-import { getPostHistoryHTMLByPostHistoryId } from '#/lib/api/lexical'
+import { getYPostUpdatesHTMLByPostId } from '#/lib/api/lexical'
 
 export default async function onBeforeRender (pageContext) {
   const { id } = pageContext.routeParams
@@ -9,13 +8,8 @@ export default async function onBeforeRender (pageContext) {
 
   let html
 
-  if (json.postHistory) {
-    const isEntity = isOfPostType(json.outRelations, 'entity')
-    const [{ id: postHistoryId }] = json.postHistory
-    const text = await getPostHistoryHTMLByPostHistoryId(
-      isEntity ? 'entity' : 'bio',
-      postHistoryId
-    )
+  if (json) {
+    const text = await getYPostUpdatesHTMLByPostId(json.id)
 
     try {
       JSON.parse(text)
