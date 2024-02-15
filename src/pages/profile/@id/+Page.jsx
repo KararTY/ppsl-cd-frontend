@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react'
-import { encode } from '@msgpack/msgpack'
 import { EditIcon, XIcon } from 'lucide-react'
 
 import cdROMImage from '#/assets/CD-ROM.png'
@@ -13,7 +12,7 @@ import { BioHTML } from '#/components/ppsl-cd-lexical-shared/src/editors/Bio/rea
 import { Container } from '#/components/Container'
 import { PostTitle } from '#/components/post/Title'
 
-export function Page (pageProps) {
+export default function Page (pageProps) {
   const [edit, setEdit] = useState(false)
 
   const { request = {}, user = {} } = pageProps
@@ -46,12 +45,11 @@ export function Page (pageProps) {
     event.preventDefault()
 
     const content = editor.getEditorState().toJSON()
-    const encodedContent = encode(content).toString()
 
     const body = {
       title: bio.title,
       language: bio.language,
-      content: encodedContent
+      content
     }
 
     try {

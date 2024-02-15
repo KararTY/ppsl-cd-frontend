@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
-import { ChevronLeftIcon, InfoIcon, UserIcon } from 'lucide-react'
+import { CalendarIcon, ChevronLeftIcon, UserIcon } from 'lucide-react'
 
 import { Link } from '#/renderer/Link'
 import { usePageContext } from '#/renderer/usePageContext'
 
-import { tryParseContent } from '#/lib/api/posts/utils'
 import { getAuthorsForPostId } from '#/lib/api/posts'
 import { getEditURLForPost, isOfPostType } from '#/lib/post'
 
@@ -15,36 +14,39 @@ import { Container } from '#/components/Container'
 import { PostTitle } from '#/components/post/Title'
 import { Tags } from '#/components/post/Tags'
 import useFormattedDate from '#/components/useFormattedDate'
-import { typeToColorClassAndIcon } from '#/components/review/Card'
 import { PostsList } from '#/components/post/List'
 import { Reviews } from '#/components/review'
+import { typeToColorClassAndIcon } from '#/components/review/utils'
+import { stringToUint8Array } from '#/lib/yjs'
 
-export function Page (pageProps) {
+export default function Page (pageProps) {
   const { urlPathname } = usePageContext()
   const { request, html } = pageProps
 
-  const [{ title, content }] = request.postHistory
+  const { post, update } = request
+
+  const [{ title, createdTimestamp: lastUpdated }] = post.postUpdates
   const [authors, setAuthors] = useState([])
 
-  const parsedContent = tryParseContent(content, true)
+  const parsedContent = stringToUint8Array(update)
 
-  const isEntity = isOfPostType(request.outRelations, 'entity')
-  const isReview = isOfPostType(request.outRelations, 'review')
-  const isBio = isOfPostType(request.outRelations, 'bio')
+  const isEntity = isOfPostType(post.outRelations, 'entity')
+  const isReview = isOfPostType(post.outRelations, 'review')
+  const isBio = isOfPostType(post.outRelations, 'bio')
   const isSystem =
-    isOfPostType(request.outRelations, 'system') || request.id === 'system'
+    isOfPostType(post.outRelations, 'system') || post.id === 'system'
 
-  const editURL = getEditURLForPost(urlPathname, request.outRelations)
+  const editURL = getEditURLForPost(urlPathname, post.outRelations)
 
   const isAuthor = authors.some((author) => author.id === pageProps.user?.id)
 
-  const createdTimestamp = useFormattedDate(request.createdTimestamp)
+  const createdTimestamp = useFormattedDate(post.createdTimestamp)
 
   useEffect(() => {
     let cancel = false
 
     async function getAuthors () {
-      const authorsRes = await getAuthorsForPostId(request.id)
+      const authorsRes = await getAuthorsForPostId(post.id)
       if (!cancel) setAuthors(authorsRes)
     }
 
@@ -53,7 +55,7 @@ export function Page (pageProps) {
     return () => {
       cancel = true
     }
-  }, [request.id])
+  }, [post.id])
 
   return (
     <Container>
@@ -97,19 +99,17 @@ export function Page (pageProps) {
 
         <PostTitle
           title={title}
-          timestamp={request.lastUpdated}
-          edit={
-            isReview
-              ? isAuthor
-                ? { href: `/post/${request.reviewing.toPost.id}/review` }
-                : null
-              : { href: editURL }
-          }
+          timestamp={lastUpdated}
+          // edit={
+          //   isReview
+          //     ? isAuthor
+          //       ? { href: `/post/${request.reviewing.toPost.id}/review` }
+          //       : null
+          //     : { href: editURL }
+          // }
         />
 
-        {!!request.outRelations.length && (
-          <Tags relations={request.outRelations} />
-        )}
+        {!!post.outRelations.length && <Tags relations={post.outRelations} />}
 
         {html
           ? (
@@ -124,7 +124,7 @@ export function Page (pageProps) {
 
         <div className="mt-8 flex flex-col gap-2 text-xs text-gray-500 dark:text-gray-400">
           <span className="inline-flex items-center gap-1">
-            <InfoIcon size="1em" />
+            <CalendarIcon size="1em" />
             &quot;{title}&quot; post created:{' '}
             {createdTimestamp || (
               <span className="inline-block h-3 w-1/4 animate-pulse bg-slate-400 bg-opacity-25"></span>
@@ -150,12 +150,12 @@ export function Page (pageProps) {
           </div>
         </div>
 
-        {isEntity && (
+        {/* isEntity && (
           <>
             <hr className="my-8" />
             <Reviews postId={request.id} />
           </>
-        )}
+        ) */}
 
         {!isReview && !isBio && (
           <PostsList post={request} isSystem={isSystem || undefined} />
@@ -163,26 +163,4 @@ export function Page (pageProps) {
       </div>
     </Container>
   )
-}
-
-// getDocumentProps() can use fetched data to provide <title> and <meta name="description">
-export function getDocumentProps (pageProps) {
-  const { request } = pageProps
-
-  const [{ title: postHistoryTitle }] = request.postHistory
-
-  let title = postHistoryTitle
-
-  const isReview = isOfPostType(request.outRelations, 'review')
-
-  if (isReview) {
-    const [{ title: reviewingPostHistoryTitle }] =
-      request.reviewing.toPost.postHistory
-
-    title = `"${postHistoryTitle}" reviewing ${reviewingPostHistoryTitle}`
-  }
-
-  return {
-    title
-  }
 }

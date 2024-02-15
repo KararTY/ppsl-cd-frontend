@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { encode } from '@msgpack/msgpack'
 
+import { usePageContext } from '#/renderer/usePageContext'
 import { tryParseContent } from '#/lib/api/posts/utils'
 import { updatePostById } from '#/lib/api/posts'
 
@@ -11,6 +11,7 @@ const LANGUAGE = 'language'
 const TITLE = 'title'
 
 export function EntityForm ({ entity }) {
+  const { user } = usePageContext()
   const [{ language, title, content }] = entity.postHistory
 
   const [isSaving, setIsSaving] = useState(false)
@@ -47,12 +48,13 @@ export function EntityForm ({ entity }) {
     if (errors.size > 0) return
 
     const content = editor.getEditorState().toJSON()
-    const encodedContent = encode(content).toString()
+
+    // encodeStateVector
 
     const body = {
       title,
       language,
-      content: encodedContent
+      content
     }
 
     setIsSaving(true)
@@ -108,7 +110,8 @@ export function EntityForm ({ entity }) {
         title={'Editing entity'}
         post={entity}
         onSubmit={onSubmitEntity}
-        initialContent={parsedContent}
+        content={parsedContent}
+        user={user}
       />
     </>
   )

@@ -9,10 +9,11 @@ const MAX_PAGINATION_TAKE = 50
 const jsonHeaders = new Headers({ 'content-type': 'application/json' })
 
 const origin = globalThis?.location?.origin
-export const API_ENDPOINT = origin
-  ? `${origin}/api/`
-  : process.env.API_ENDPOINT
+export const API_ENDPOINT = origin ? `${origin}/api/` : process.env.API_ENDPOINT
 
+/**
+ * @param {string} id
+ */
 export async function getPostById (id) {
   const url = new URL(`./posts/id/${id}`, API_ENDPOINT)
   const res = await fetch(url)
@@ -119,6 +120,19 @@ export async function updatePostById (postId, body) {
   })
 
   return res
+}
+
+/**
+ * @param {string} title
+ * @param {string} language
+ * @param {string} content
+ */
+export async function createPost (title, language, content) {
+  return await fetch('/api/posts/', {
+    method: 'POST',
+    headers: jsonHeaders,
+    body: JSON.stringify({ title, language, content })
+  })
 }
 
 export async function upsertReviewForPostId (postId, body) {

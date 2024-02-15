@@ -1,10 +1,9 @@
 import { useState } from 'react'
-import { CheckCircleIcon, CircleDashedIcon } from 'lucide-react'
 
 import { useWikimediaCommonsQueryAllImages } from '#/lib/api/wikimedia'
 import { filterByFileNameExtension } from '#/lib/filename'
 
-import { titleFromURLString } from '../ppsl-cd-lexical-shared/src/editors/Entity/editor'
+import { titleFromURLString } from '../ppsl-cd-lexical-shared/src/editors/Entity/utils'
 
 import { Button } from '../Button'
 import { DebouncedInput } from '../DebouncedInput'
@@ -13,7 +12,7 @@ import { PaginationButtons } from '../PaginationButtons'
 /**
  * @param {{ image: any, onClick: () => {}, selected: boolean }}
  */
-const Result = ({ image, onClick, selected }) => {
+function Result ({ image, onClick, selected }) {
   const isSupported = filterByFileNameExtension(image.name, [
     'png',
     'jpg',
@@ -44,17 +43,10 @@ const Result = ({ image, onClick, selected }) => {
       {isSupported
         ? (
         <>
-          <div className="flex w-full items-center justify-center gap-2 rounded rounded-b-none border-t border-blue-500 bg-blue-900 bg-opacity-75 p-2 text-white">
-            <div>
-              {selected
-                ? (
-                <CheckCircleIcon size="1em" />
-                  )
-                : (
-                <CircleDashedIcon size="1em" />
-                  )}
-            </div>
-            <span className="text-ellipsis">{fileName}</span>
+          <div className="flex w-full items-center justify-center gap-2 bg-blue-900 bg-opacity-75 p-2 text-white">
+            <span className="text-ellipsis text-sm sm:text-base">
+              {fileName}
+            </span>
           </div>
           <div
             data-unblur-text={blur ? 'Unblur' : ''}
@@ -66,11 +58,14 @@ const Result = ({ image, onClick, selected }) => {
               className={`${blur ? 'blur-3xl' : ''} max-h-96`}
             />
           </div>
-          {selected && (
-            <div className="absolute bottom-0 left-0 w-full bg-[#1095c1] p-2 leading-none text-white">
-              Selected
-            </div>
-          )}
+
+          <div
+            className={`absolute bottom-0 left-0 w-full ${
+              selected ? 'bg-[#1095c1]' : 'bg-black/50'
+            } p-2 leading-none text-white`}
+          >
+            {selected ? 'Selected' : 'Select'}
+          </div>
         </>
           )
         : (
@@ -110,18 +105,18 @@ export function ChooseImageModal (props) {
   return (
     <form onSubmit={onSubmitCatch}>
       <dialog role="dialog" open>
-        <article className="!container relative pb-0">
-          <header>
+        <article className="!container relative rounded py-0">
+          <header className="sticky top-0 z-10 mt-0 py-5">
             <a
               href="#close"
               aria-label="close"
               className="close"
               onClick={() => onClose?.()}
             />
-            <h4 className="m-0">Choose image</h4>
+            <h6 className="m-0">Choose image</h6>
           </header>
 
-          <div>
+          <div className="text-sm sm:text-base">
             <strong>
               Make sure you properly use capitalization for your query, e.g.{' '}
               <code className="bg-white text-black">
@@ -154,7 +149,7 @@ export function ChooseImageModal (props) {
             </select>
           </div>
 
-          <div className="mb-4">
+          <div className="mb-8 text-sm sm:text-base">
             <strong>
               Wikimedia Commons is a global repository of images.{' '}
               <span className="text-red-500">
@@ -174,7 +169,7 @@ export function ChooseImageModal (props) {
                   page={page}
                   canContinue={canContinue}
                 />
-                <div className="my-2 !grid auto-rows-auto grid-cols-2 gap-4 rounded-xl bg-gray-500 bg-opacity-10 p-4">
+                <div className="my-4 !grid auto-rows-auto grid-cols-1 gap-2 rounded-xl bg-gray-500 bg-opacity-10 sm:grid-cols-2">
                   {response?.query?.allimages?.map((image) => (
                     <Result
                       key={image.name}
@@ -201,30 +196,33 @@ export function ChooseImageModal (props) {
             </>
               )}
 
-          <footer className="sticky bottom-0 mb-0 flex h-12 gap-4 bg-[#18232c] py-2">
+          <footer className="sticky bottom-0 mb-0 flex gap-4 bg-[#18232c] py-2 ">
             <Button
               type="button"
-              className="w-full p-2 text-sm leading-none"
+              className="w-full sm:flex-1"
               onClick={() => onClose?.()}
             >
               Cancel
             </Button>
             <Button
               type={undefined}
-              className="w-full p-2 text-sm leading-none text-white"
+              className="w-full overflow-hidden text-white sm:flex-1"
               disabled={!selectedImage}
             >
               {selectedImage
                 ? (
-                <>
+                <span
+                  className="line-clamp-1 text-ellipsis"
+                  title={titleFromURLString(selectedImage)}
+                >
                   Use{' '}
                   <strong>
                     &quot;{titleFromURLString(selectedImage)}&quot;
                   </strong>
-                </>
+                </span>
                   )
                 : (
-                    'Select an image by pressing the title'
+                    'Select'
                   )}
             </Button>
           </footer>
