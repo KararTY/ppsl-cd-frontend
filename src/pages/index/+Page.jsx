@@ -4,9 +4,10 @@ import { Link } from '#/renderer/Link'
 
 import { API_ENDPOINT, usePaginatedEndpoint } from '#/lib/api/posts'
 
-import { PostCard, PostCardPlaceholder } from '#/components/post/Card'
+import { PostCardPlaceholder } from '#/components/post/Card'
 import { Container } from '#/components/Container'
 import { PaginationButtons } from '#/components/PaginationButtons'
+import { PostCardsResponse } from '#/components/post/List'
 
 const latestPostsFilter = {
   AND: [
@@ -69,18 +70,7 @@ export default function Page (pageProps) {
         <div className="flex flex-col gap-2">
           <strong>System categories</strong>
           <div className="!grid grid-cols-2 gap-2">
-            {request.result?.map((post) => {
-              const postsWithoutCreatedTimestamp = {
-                ...post,
-                postHistory: post.postHistory.map((postHistory) => ({
-                  ...postHistory,
-                  createdTimestamp: null
-                }))
-              }
-              return (
-                <PostCard key={post.id} post={postsWithoutCreatedTimestamp} />
-              )
-            })}
+            <PostCardsResponse response={request} excludingKeys={['createdTimestamp']} />
           </div>
         </div>
 
@@ -97,11 +87,7 @@ export default function Page (pageProps) {
           />
           <div className="!grid grid-cols-2 gap-2">
             {!isLoading && !isFetching
-              ? (
-                  response?.result?.map((post) => (
-                <PostCard key={post.id} post={post} />
-                  ))
-                )
+              ? <PostCardsResponse response={response} />
               : (
               <PostCardPlaceholder count={6} />
                 )}
