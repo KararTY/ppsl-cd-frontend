@@ -556,7 +556,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jridgewell/sourcemap-codec@npm:^1.4.10":
+"@jridgewell/sourcemap-codec@npm:^1.4.10, @jridgewell/sourcemap-codec@npm:^1.4.15":
   version: 1.4.15
   resolution: "@jridgewell/sourcemap-codec@npm:1.4.15"
   checksum: 89960ac087781b961ad918978975bcdf2051cd1741880469783c42de64239703eab9db5230d776d8e6a09d73bb5e4cb964e07d93ee6e2e7aea5a7d726e865c09
@@ -709,6 +709,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@lexical/offset@npm:0.13.1":
+  version: 0.13.1
+  resolution: "@lexical/offset@npm:0.13.1"
+  peerDependencies:
+    lexical: 0.13.1
+  checksum: 00fc1d6e096029390359185e2bc906fd204186e7434a6e16ae9f8ad75ecebe5aad8f9db43365650daffff5f94da6e26a86ec949ce2dc599e6c90c57d13d33329
+  languageName: node
+  linkType: hard
+
 "@lexical/overflow@npm:0.12.6":
   version: 0.12.6
   resolution: "@lexical/overflow@npm:0.12.6"
@@ -823,6 +832,18 @@ __metadata:
     lexical: 0.12.6
     yjs: ">=13.5.22"
   checksum: 659f01cb2dffdfbaccee99597e13ec9ff1db3f6430162c3dfd7572bd777597d05c6ce032b31ddffa4a9f794442a92124e93624bc03209b6697d0c21db481d869
+  languageName: node
+  linkType: hard
+
+"@lexical/yjs@npm:^0.13.1":
+  version: 0.13.1
+  resolution: "@lexical/yjs@npm:0.13.1"
+  dependencies:
+    "@lexical/offset": "npm:0.13.1"
+  peerDependencies:
+    lexical: 0.13.1
+    yjs: ">=13.5.22"
+  checksum: 67e1fe01cebcad01f49bf9c637883b3afd0011f527f3a1a3c627c0c5204ceeb0a25f4a40f62a7c008e26bf9dc0c859e5222f228660777388ea7c3aeec255e75b
   languageName: node
   linkType: hard
 
@@ -1074,7 +1095,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/estree@npm:*":
+"@types/estree@npm:*, @types/estree@npm:^1.0.0":
   version: 1.0.5
   resolution: "@types/estree@npm:1.0.5"
   checksum: 7de6d928dd4010b0e20c6919e1a6c27b61f8d4567befa89252055fad503d587ecb9a1e3eab1b1901f923964d7019796db810b7fd6430acb26c32866d126fd408
@@ -1244,6 +1265,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"acorn-import-assertions@npm:^1.9.0":
+  version: 1.9.0
+  resolution: "acorn-import-assertions@npm:1.9.0"
+  peerDependencies:
+    acorn: ^8
+  checksum: af8dd58f6b0c6a43e85849744534b99f2133835c6fcdabda9eea27d0a0da625a0d323c4793ba7cb25cf4507609d0f747c210ccc2fc9b5866de04b0e59c9c5617
+  languageName: node
+  linkType: hard
+
 "acorn-jsx@npm:^5.3.2":
   version: 5.3.2
   resolution: "acorn-jsx@npm:5.3.2"
@@ -1253,7 +1283,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn@npm:^8.0.0":
+"acorn@npm:^8.0.0, acorn@npm:^8.11.3":
   version: 8.11.3
   resolution: "acorn@npm:8.11.3"
   bin:
@@ -2869,6 +2899,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"estree-walker@npm:^3.0.3":
+  version: 3.0.3
+  resolution: "estree-walker@npm:3.0.3"
+  dependencies:
+    "@types/estree": "npm:^1.0.0"
+  checksum: a65728d5727b71de172c5df323385755a16c0fdab8234dc756c3854cfee343261ddfbb72a809a5660fac8c75d960bb3e21aa898c2d7e9b19bb298482ca58a3af
+  languageName: node
+  linkType: hard
+
 "esutils@npm:^2.0.2":
   version: 2.0.3
   resolution: "esutils@npm:2.0.3"
@@ -4157,6 +4196,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"magic-string@npm:^0.30.8":
+  version: 0.30.9
+  resolution: "magic-string@npm:0.30.9"
+  dependencies:
+    "@jridgewell/sourcemap-codec": "npm:^1.4.15"
+  checksum: a49b7f848e36914c2794e443d4da6579abebb3e57a5e98b1603958f4672d1435dc15261f70c2793e9b6d6c891191c83b9608322b48d0d76a9be32e73e039cc8a
+  languageName: node
+  linkType: hard
+
 "make-fetch-happen@npm:^10.0.3":
   version: 10.2.1
   resolution: "make-fetch-happen@npm:10.2.1"
@@ -4268,6 +4316,15 @@ __metadata:
   dependencies:
     brace-expansion: "npm:^2.0.1"
   checksum: b4e98f4dc740dcf33999a99af23ae6e5e1c47632f296dc95cb649a282150f92378d41434bf64af4ea2e5975255a757d031c3bf014bad9214544ac57d97f3ba63
+  languageName: node
+  linkType: hard
+
+"minimatch@npm:^9.0.3":
+  version: 9.0.4
+  resolution: "minimatch@npm:9.0.4"
+  dependencies:
+    brace-expansion: "npm:^2.0.1"
+  checksum: 4cdc18d112b164084513e890d6323370db14c22249d536ad1854539577a895e690a27513dc346392f61a4a50afbbd8abc88f3f25558bfbbbb862cd56508b20f5
   languageName: node
   linkType: hard
 
@@ -4924,6 +4981,7 @@ __metadata:
     "@lexical/react": "npm:^0.12.6"
     "@lexical/selection": "npm:^0.12.6"
     "@lexical/utils": "npm:^0.12.6"
+    "@lexical/yjs": "npm:^0.13.1"
     "@picocss/pico": "npm:^1.5.11"
     "@tanstack/react-query": "npm:^4.36.1"
     "@types/react": "npm:^18.2.48"
@@ -4953,10 +5011,12 @@ __metadata:
     rimraf: "npm:^5.0.5"
     sass: "npm:^1.70.0"
     tailwindcss: "npm:^3.4.1"
+    uint8array-extras: "npm:^1.1.0"
     vike: "npm:^0.4.159"
     vite: "npm:^4.5.2"
+    vite-plugin-cjs-interop: "npm:^2.1.0"
     y-indexeddb: "npm:^9.0.12"
-    yjs: "npm:^13.6.11"
+    yjs: "npm:>=13.5.22"
   languageName: unknown
   linkType: soft
 
@@ -6135,6 +6195,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"uint8array-extras@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "uint8array-extras@npm:1.1.0"
+  checksum: 8f5d7df2da4a0e4ee82b5ba77f270bc4cbd6909a5fabf34f65401d2612fa52fc87db4db0d002650e52594698ffb5414df953fd08deaaae5e578d42e68d9654cd
+  languageName: node
+  linkType: hard
+
 "unbox-primitive@npm:^1.0.2":
   version: 1.0.2
   resolution: "unbox-primitive@npm:1.0.2"
@@ -6250,6 +6317,19 @@ __metadata:
   bin:
     vike: node/cli/bin-entry.js
   checksum: 8daf1447e04d50ec7f6eae55cda0016c84da0b0d55814cef0ed6925e9d1a0d1f56e755c4d9777ac0d2f7202b38c36b47b92315d65e3b33277c7619d36c3f47c7
+  languageName: node
+  linkType: hard
+
+"vite-plugin-cjs-interop@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "vite-plugin-cjs-interop@npm:2.1.0"
+  dependencies:
+    acorn: "npm:^8.11.3"
+    acorn-import-assertions: "npm:^1.9.0"
+    estree-walker: "npm:^3.0.3"
+    magic-string: "npm:^0.30.8"
+    minimatch: "npm:^9.0.3"
+  checksum: 78d90dc8903bbb2c48dd609d449cefb9b72f7aa3e6cea2b14845fc070e6650a3bc4d6c3f285dcadfd5127f57042f83af26eab9d79befa67862b76ce3b56e55d4
   languageName: node
   linkType: hard
 
@@ -6463,12 +6543,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yjs@npm:^13.6.11":
-  version: 13.6.11
-  resolution: "yjs@npm:13.6.11"
+"yjs@npm:>=13.5.22":
+  version: 13.6.14
+  resolution: "yjs@npm:13.6.14"
   dependencies:
     lib0: "npm:^0.2.86"
-  checksum: 59cdd1c79668ef7eb8c7d037aaf507b802b1c53c8cdca8574578426e40f4a44931de5b0f703ae26a66cae8f31abe8681cbfb6cac04e33e85d7c62c04b9f70b1a
+  checksum: aa277393aea2524bf80d014b570a2949a6fe930fb9809dbdb38c04fe6086385f3abba8daf4cce2ddfa421c2f8c450c7beede9972106dece405071e0dc5664a11
   languageName: node
   linkType: hard
 

@@ -7,9 +7,6 @@ import { usePageContext } from '#/renderer/usePageContext'
 import { getAuthorsForPostId } from '#/lib/api/posts'
 import { getEditURLForPost, isOfPostType } from '#/lib/post'
 
-import { EntityHTML } from '#/components/ppsl-cd-lexical-shared/src/editors/Entity/read'
-import { BioHTML } from '#/components/ppsl-cd-lexical-shared/src/editors/Bio/read'
-
 import { Container } from '#/components/Container'
 import { PostTitle } from '#/components/post/Title'
 import { Tags } from '#/components/post/Tags'
@@ -17,7 +14,10 @@ import useFormattedDate from '#/components/useFormattedDate'
 import { PostsList } from '#/components/post/List'
 import { Reviews } from '#/components/review'
 import { typeToColorClassAndIcon } from '#/components/review/utils'
-import { stringToUint8Array } from '#/lib/yjs'
+import { SYSTEM_IDS } from '#/components/ppsl-cd-lexical-shared/src/editors/constants'
+import { YjsToHTML } from '#/components/ppsl-cd-lexical-shared/src/toHTML/YjsToHTML'
+
+const { ENTITY, BIO } = SYSTEM_IDS
 
 export default function Page (pageProps) {
   const { urlPathname } = usePageContext()
@@ -27,8 +27,6 @@ export default function Page (pageProps) {
 
   const [{ title, createdTimestamp: lastUpdated }] = post.postUpdates
   const [authors, setAuthors] = useState([])
-
-  const parsedContent = stringToUint8Array(update)
 
   const isEntity = isOfPostType(post.outRelations, 'entity')
   const isReview = isOfPostType(post.outRelations, 'review')
@@ -117,8 +115,8 @@ export default function Page (pageProps) {
             )
           : (
           <>
-            {isEntity && <EntityHTML initialContent={parsedContent} />}
-            {(isBio || isReview) && <BioHTML initialContent={parsedContent} />}
+            {isEntity && <YjsToHTML update={update} type={ENTITY} />}
+            {(isBio || isReview) && <YjsToHTML update={update} type={BIO} />}
           </>
             )}
 
@@ -157,9 +155,9 @@ export default function Page (pageProps) {
           </>
         ) */}
 
-        {!isReview && !isBio && (
+        {/* !isReview && !isBio && (
           <PostsList post={request} isSystem={isSystem || undefined} />
-        )}
+        ) */}
       </div>
     </Container>
   )

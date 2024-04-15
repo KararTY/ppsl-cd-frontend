@@ -9,7 +9,7 @@ export default async function onBeforeRender (pageContext) {
   let html
 
   if (json) {
-    const text = await getYPostUpdatesHTMLByPostId(json.id)
+    const text = await getYPostUpdatesHTMLByPostId(id)
 
     try {
       JSON.parse(text)

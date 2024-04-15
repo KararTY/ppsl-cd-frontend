@@ -1,13 +1,13 @@
+import * as Y from 'yjs'
+import { uint8ArrayToBase64 } from 'uint8array-extras'
 import { useState } from 'react'
 import { Loader2Icon } from 'lucide-react'
-import * as Y from 'yjs'
 
 import { Link } from '#/renderer/Link'
 
 import { EntityEditor } from '#/components/ppsl-cd-lexical-shared/src/editors/Entity/editor'
 import { Container } from '#/components/Container'
 import { InputTitle } from '#/components/inputs/Title'
-import { uint8ArrayToString } from '#/lib/yjs'
 import { createPost } from '#/lib/api/posts'
 
 const LANGUAGE = 'language'
@@ -48,7 +48,7 @@ export default function Page ({ user }) {
     if (errors.size > 0) return
 
     const yjsUpdateState = Y.encodeStateAsUpdateV2(yDoc)
-    const encodedContent = uint8ArrayToString(yjsUpdateState)
+    const encodedContent = uint8ArrayToBase64(yjsUpdateState)
 
     setIsSaving(true)
 

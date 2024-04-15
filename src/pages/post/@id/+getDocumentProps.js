@@ -5,11 +5,13 @@ import { isOfPostType } from '#/lib/post'
 export default function getDocumentProps (pageProps) {
   const { request } = pageProps
 
-  const [{ title: postHistoryTitle }] = request.postHistory
+  const { post } = request
+
+  const [{ title: postHistoryTitle }] = post.postUpdates
 
   let title = postHistoryTitle
 
-  const isReview = isOfPostType(request.outRelations, 'review')
+  const isReview = isOfPostType(post.outRelations, 'review')
 
   if (isReview) {
     const [{ title: reviewingPostHistoryTitle }] =
