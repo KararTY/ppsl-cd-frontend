@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import { encode } from '@msgpack/msgpack'
 
 import { tryParseContent } from '#/lib/api/posts/utils'
 import { updatePostById } from '#/lib/api/posts'
 
 import { BioEditor } from '../ppsl-cd-lexical-shared/src/editors/Bio/editor'
+
+const requiredText = 'Required!'
 
 export function BioForm ({ bio }) {
   const [{ language, title, content }] = bio.postHistory
@@ -13,18 +14,17 @@ export function BioForm ({ bio }) {
 
   const [newLanguage] = useState(language || 'en')
   const [newTitle] = useState(title || '')
-  const [titleError] = useState(title ? '' : 'Required!')
+  const [titleError] = useState(title ? '' : requiredText)
 
   const onSubmitBio = async ({ event, editor }) => {
     event.preventDefault()
 
     const content = editor.getEditorState().toJSON()
-    const encodedContent = encode(content).toString()
 
     const body = {
       title: newTitle.trim(),
       language: newLanguage,
-      content: encodedContent
+      content
     }
 
     if (body.title.length === 0 || titleError) return

@@ -1,18 +1,20 @@
 import { useState } from 'react'
-import { encode } from '@msgpack/msgpack'
 import { Loader2Icon } from 'lucide-react'
 
 import { Link } from '#/renderer/Link'
 
+import { resetIndexedDb } from '#/lib/resetIndexedDb'
+import { createPost } from '#/lib/api/posts'
 import { EntityEditor } from '#/components/ppsl-cd-lexical-shared/src/editors/Entity/editor'
-
 import { Container } from '#/components/Container'
 import { InputTitle } from '#/components/inputs/Title'
+
+const NEW_ID = 'new'
 
 const LANGUAGE = 'language'
 const TITLE = 'title'
 
-export function Page () {
+export default function Page ({ user, initialUpdate }) {
   const [isSaving, setIsSaving] = useState(false)
 
   const [form, setForm] = useState({
@@ -39,36 +41,26 @@ export function Page () {
     handleFormChange({ name: LANGUAGE, value: e.target.value })
   }
 
-  const handleSubmit = async ({ event, editor }) => {
+  const handleSubmit = async ({ event, yDoc }) => {
     event.preventDefault()
 
     const { title, language, errors } = form
 
     if (errors.size > 0) return
 
-    const content = editor.getEditorState().toJSON()
-    const encodedContent = encode(content).toString()
+    setIsSaving(true)
 
     const body = {
       title: title.trim(),
-      language,
-      content: encodedContent
+      language
     }
 
-    setIsSaving(true)
-
     try {
-      const headers = new Headers()
-      headers.append('content-type', 'application/json')
-
-      const res = await fetch('/api/posts/', {
-        method: 'POST',
-        headers,
-        body: JSON.stringify(body)
-      })
+      const res = await createPost(body, yDoc)
 
       if (res.status >= 200 && res.status < 300) {
         const json = await res.json()
+        await resetIndexedDb(NEW_ID)
         window.location.href = `/post/${json.id}`
       } else {
         console.log(await res.text())
@@ -128,7 +120,13 @@ export function Page () {
           </div>
         )}
 
-        <EntityEditor onSubmit={handleSubmit} title={false} />
+        <EntityEditor
+          onSubmit={handleSubmit}
+          title={false}
+          user={user}
+          initialUpdate={initialUpdate}
+          post={{ id: NEW_ID }}
+        />
       </div>
     </Container>
   )

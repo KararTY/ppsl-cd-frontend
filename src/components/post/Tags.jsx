@@ -5,7 +5,7 @@ import { Link } from '#/renderer/Link'
 import { Button } from '../Button'
 
 /**
- * @param {{ relations: Array<{isSystem: boolean, toPost: { id: string, postHistory: Array<{language: string, title: string}>}> } }}
+ * @param {{ relations: Array<{isSystem: boolean, toPost: { id: string, postUpdates: Array<{language: string, title: string}>}, toPostId: string> } }}
  */
 export function Tags ({ relations = [] }) {
   const [showAllTags, setShowAllTags] = useState(false)
@@ -30,15 +30,15 @@ export function Tags ({ relations = [] }) {
       <span title="Post tags">
         <TagsIcon />
       </span>
-      {relationsToShow.map(({ isSystem, toPost }) => (
+      {relationsToShow.map(({ isSystem, toPost, toPostId }) => (
         <Link
-          key={toPost.id}
+          key={toPost?.id || toPostId}
           className="flex items-center gap-1 rounded bg-gray-500 bg-opacity-25 p-1 text-xs leading-none no-underline"
-          href={`/post/${toPost.id}`}
+          href={`/post/${toPost?.id || toPostId}`}
           title={isSystem ? 'System tag' : undefined}
         >
           {isSystem && <LockIcon size={'1em'} />}
-          <span>{toPost.postHistory[0].title}</span>
+          <span>{toPost.postUpdates[0].title}</span>
         </Link>
       ))}
       {!!linkedRelations.length && (

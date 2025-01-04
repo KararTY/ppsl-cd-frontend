@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import { API_ENDPOINT, usePaginatedEndpoint } from '#/lib/api/posts'
 
@@ -81,4 +81,25 @@ export function PostsList ({ post, isSystem }) {
       </div>
     </>
   )
+}
+
+/**
+ * @param {{ response: any, excludingKeys: string[] }}
+ */
+export function PostCardsResponse ({ response, excludingKeys }) {
+  const results = useMemo(() => response?.result?.map((post) => {
+    const update = post.postUpdates[0]
+
+    if (excludingKeys?.length > 0) {
+      excludingKeys.forEach((key) => {
+        update[key] = undefined
+      })
+    }
+
+    return (
+      <PostCard key={post.id} {...update} id={post.id} />
+    )
+  }), [response?.result, excludingKeys])
+
+  return results
 }

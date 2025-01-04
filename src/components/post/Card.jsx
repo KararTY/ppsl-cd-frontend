@@ -4,16 +4,14 @@ import useFormattedDate from '../useFormattedDate'
 
 const POST_PAGE_ENDPOINT = '/post'
 
-export function PostCard ({ post }) {
-  const [{ title, createdTimestamp }] = post.postHistory
-
+export function PostCard ({ id, title, createdTimestamp }) {
   const timestamp = useFormattedDate(createdTimestamp)
 
   return (
-    <Link href={`${POST_PAGE_ENDPOINT}/${post.id}`} className="no-underline">
+    <Link href={`${POST_PAGE_ENDPOINT}/${id}`} className="no-underline">
       <article className="m-0 h-full p-0">
         <header className="m-0 flex h-full flex-col p-3">
-          <strong>{title || <i>Missing title!</i>}</strong>
+          <strong>{title || <i>Untitled</i>}</strong>
           {timestamp && <small className="text-xs">{timestamp}</small>}
         </header>
       </article>

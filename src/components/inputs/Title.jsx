@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 
+const requiredText = 'Required!'
+
 export function InputTitle ({ name, initialValue, handleChange }) {
   const [title, setTitle] = useState(initialValue || '')
-  const [error, setError] = useState(initialValue ? null : 'Required!')
+  const [error, setError] = useState(initialValue ? null : requiredText)
 
   const handleTitleChange = (e) => {
     const value = e.target.value.trimStart()
@@ -10,7 +12,7 @@ export function InputTitle ({ name, initialValue, handleChange }) {
 
     let error
     if (value.length === 0) {
-      error = 'Required'
+      error = requiredText
     } else {
       error = null
     }
