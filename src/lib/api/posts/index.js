@@ -3,6 +3,15 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 
+import { encodeYDocToUpdateV2ToBase64 } from '#/lib/post'
+import { SYSTEM_IDS } from '#/components/ppsl-cd-lexical-shared/src/editors/constants'
+
+const { ENTITY, BIO, REVIEW } = SYSTEM_IDS
+
+/**
+ * @typedef {keyof typeof import('#/components/ppsl-cd-lexical-shared/src/editors/constants').SYSTEM_IDS} SYSTEM_IDS
+ */
+
 // 50 is current database max take for pagination.
 const MAX_PAGINATION_TAKE = 50
 
@@ -14,13 +23,16 @@ export const API_ENDPOINT = origin ? `${origin}/api/` : process.env.API_ENDPOINT
 /**
  * @param {string} id
  */
-export async function getPostById (id) {
+export const getPostById = async (id) => {
   const url = new URL(`./posts/id/${id}`, API_ENDPOINT)
   const res = await fetch(url)
-  return await res.json()
+  return res.json()
 }
 
-export async function getPostsByTitle (title, filter = []) {
+/**
+ * @param {string} title
+ */
+export const getPostsByTitle = async (title, filter = []) => {
   const url = new URL('./posts/filter', API_ENDPOINT)
 
   const query = {
@@ -45,14 +57,17 @@ export async function getPostsByTitle (title, filter = []) {
     body: JSON.stringify(query)
   })
 
-  return await res.json()
+  return res.json()
 }
 
-export async function getUserReviewByPostId (id, cookie) {
+/**
+ * @param {string} id
+ */
+export const getUserReviewByPostId = async (id, cookie) => {
   const url = new URL(`./posts/id/${id}/review`, API_ENDPOINT)
 
   const res = await fetch(url, { headers: { cookie } })
-  return await res.json()
+  return res.json()
 }
 
 export function usePaginatedEndpoint (
@@ -106,41 +121,91 @@ export function usePaginatedEndpoint (
   }
 }
 
-export async function getAuthorsForPostId (postId) {
+/**
+ * @param {string} postId
+ */
+export const getAuthorsForPostId = async (postId) => {
   const url = new URL(`./posts/id/${postId}/authors`, API_ENDPOINT)
   const res = await fetch(url)
-  return await res.json()
-}
-
-export async function updatePostById (postId, body) {
-  const res = await fetch(`/api/posts/id/${postId}`, {
-    method: 'POST',
-    headers: jsonHeaders,
-    body: JSON.stringify(body)
-  })
-
-  return res
+  return res.json()
 }
 
 /**
- * @param {string} title
- * @param {string} language
- * @param {string} content
+ * @param {{ title: string, language: string }}
+ * @param {import('yjs').Doc} yDoc
  */
-export async function createPost (title, language, content) {
-  return await fetch('/api/posts/', {
-    method: 'POST',
-    headers: jsonHeaders,
-    body: JSON.stringify({ title, language, content })
-  })
-}
+export const createPost = ({ title, language }, yDoc) => {
+  const encodedContent = encodeYDocToUpdateV2ToBase64(yDoc)
 
-export async function upsertReviewForPostId (postId, body) {
-  const res = await fetch(`/api/posts/id/${postId}/reviews`, {
+  const body = {
+    title,
+    language,
+    content: encodedContent
+  }
+
+  const url = new URL('./posts/', API_ENDPOINT)
+
+  return fetch(url, {
     method: 'POST',
     headers: jsonHeaders,
     body: JSON.stringify(body)
   })
+}
 
-  return res
+/**
+ * @param {{ title: string, language: string, id: string }}
+ * @param {import('yjs').Doc} yDoc
+ */
+export const updatePost = ({ title, language, id }, yDoc) => {
+  const encodedContent = encodeYDocToUpdateV2ToBase64(yDoc)
+
+  const body = {
+    title,
+    language,
+    content: encodedContent
+  }
+
+  const url = new URL(`./posts/id/${id}`, API_ENDPOINT)
+
+  return fetch(url, {
+    method: 'POST',
+    headers: jsonHeaders,
+    body: JSON.stringify(body)
+  })
+}
+
+/**
+ * @param {{ title: string, language: string, type: string, id: string }}
+ * @param {import('yjs').Doc} yDoc
+ */
+export const upsertReviewForPostId = ({ title, language, type, id }, yDoc) => {
+  const encodedContent = encodeYDocToUpdateV2ToBase64(yDoc)
+
+  const body = {
+    title,
+    language,
+    type,
+    content: encodedContent
+  }
+  const url = new URL(`./posts/id/${id}/reviews`, API_ENDPOINT)
+
+  return fetch(url, {
+    method: 'POST',
+    headers: jsonHeaders,
+    body: JSON.stringify(body)
+  })
+}
+
+/**
+ * @param {SYSTEM_IDS} type
+ */
+export const getInitialUpdate = async (type) => {
+  if (![ENTITY, BIO, REVIEW].includes(type)) {
+    throw new Error('Unsupported type.')
+  }
+
+  const url = new URL(`./posts/initial/${type}`, API_ENDPOINT)
+  const res = await fetch(url)
+
+  return res.text()
 }

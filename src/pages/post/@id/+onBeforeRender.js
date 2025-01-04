@@ -1,28 +1,14 @@
 import { getPostById } from '#/lib/api/posts'
-import { getYPostUpdatesHTMLByPostId } from '#/lib/api/lexical'
 
 export default async function onBeforeRender (pageContext) {
   const { id } = pageContext.routeParams
 
-  const json = await getPostById(id)
-
-  let html
-
-  if (json) {
-    const text = await getYPostUpdatesHTMLByPostId(id)
-
-    try {
-      JSON.parse(text)
-      html = undefined
-    } catch {
-      html = text
-    }
-  }
+  const { post, html } = await getPostById(id)
 
   return {
     pageContext: {
       pageProps: {
-        request: json,
+        post,
         html
       }
     }

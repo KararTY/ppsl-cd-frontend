@@ -1,21 +1,20 @@
-import { isOfPostType } from '#/lib/post'
-
 // getDocumentProps() can use fetched data to provide <title> and <meta name="description">
 
-export default function getDocumentProps (pageProps) {
-  const { request } = pageProps
+import { SYSTEM_IDS } from '#/components/ppsl-cd-lexical-shared/src/editors/constants'
+import { getPostType } from '#/components/ppsl-cd-lexical-shared/src/editors/utils'
 
-  const { post } = request
+export default function getDocumentProps (pageProps) {
+  const { post } = pageProps
 
   const [{ title: postHistoryTitle }] = post.postUpdates
 
   let title = postHistoryTitle
 
-  const isReview = isOfPostType(post.outRelations, 'review')
+  const isReview = getPostType(post) === SYSTEM_IDS.REVIEW
 
   if (isReview) {
     const [{ title: reviewingPostHistoryTitle }] =
-      request.reviewing.toPost.postHistory
+      post.reviewing.toPost.postHistory
 
     title = `"${postHistoryTitle}" reviewing ${reviewingPostHistoryTitle}`
   }
