@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "packageManager": "yarn@4.6.0",
   "scripts": {
     "start": "node ./server/index.js",
     "start-dev": "node ./server/index.js --dev",
@@ -12,25 +13,25 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@lexical/headless": "^0.12.6",
-    "@lexical/react": "^0.12.6",
-    "@lexical/selection": "^0.12.6",
-    "@lexical/utils": "^0.12.6",
-    "@lexical/yjs": "^0.13.1",
+    "@lexical/headless": "0.22.0",
+    "@lexical/react": "0.22.0",
+    "@lexical/selection": "0.22.0",
+    "@lexical/utils": "0.22.0",
+    "@lexical/yjs": "0.22.0",
     "@picocss/pico": "^1.5.11",
     "@tanstack/react-query": "^4.36.1",
     "compression": "^1.7.4",
     "dotenv": "^16.3.2",
     "express": "^4.18.2",
     "fastify-next-auth": "^0.7.0",
-    "lexical": "^0.12.6",
+    "lexical": "0.22.0",
     "lucide-react": "^0.312.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "uint8array-extras": "^1.1.0",
     "vike": "^0.4.159",
     "y-indexeddb": "^9.0.12",
-    "yjs": ">=13.5.22"
+    "yjs": "13.6.21"
   },
   "devDependencies": {
     "@types/react": "^18.2.48",
@@ -54,5 +55,9 @@
     "tailwindcss": "^3.4.1",
     "vite": "^4.5.2"
   },
-  "packageManager": "yarn@4.0.2"
+  "overrides": {
+    "lexical": "0.22.0",
+    "yjs": "13.6.21",
+    "@lexical/yjs": "0.22.0"
+  }
 }
